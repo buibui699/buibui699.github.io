@@ -1,0 +1,39 @@
+# Operating System Files / 系统生成文件
+.DS_Store
+Thumbs.db
+
+# Hexo Cache & Database / Hexo 缓存和数据库文件
+db.json
+
+# Log Files / 日志文件
+*.log
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log
+
+# Node.js Dependencies / Node.js 依赖文件夹 (非常重要!)
+node_modules/
+
+# Hexo Generated Static Files / Hexo 生成的静态文件目录 (非常重要!)
+public/
+
+# Hexo Deployment Cache / Hexo 部署缓存目录
+.deploy_git/
+.deploy*/
+
+# Hexo Multi-config placeholder / Hexo 多配置文件占位符
+_multiconfig.yml
+
+# Theme specific ignores / 主题特定忽略
+themes/*/node_modules/
+themes/*/.git/ # 如果主题是通过 git clone 或 submodule 添加的
+
+# Editor/IDE specific / 编辑器或IDE特定文件 (可选，但推荐)
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Other / 其他
+.eslintcache
+*.tgz # 例如 npm pack 生成的压缩包
