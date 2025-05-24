@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
-description: ''
-keywords:
-author: John Doe
-language: en
-timezone: ''
+title: 辋川的个人博客
+subtitle: '欢迎来到辋川的博客'
+description: '于比特之海中构建属于自己的岛屿，用文字丈量思考的深度，用分享连接有趣的灵魂。这里是我的思考记录本，也是与世界对话的窗口'
+keywords: Hexo, 博客, 技术, 学习笔记 # 修改为您的博客关键词，用逗号分隔
+author: 辋川
+language: zh-CN
+timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
@@ -65,7 +65,7 @@ index_generator:
   order_by: -date
 
 # Category & Tag
-default_category: uncategorized
+default_category: 作者很懒哦~尚未分类
 category_map:
 tag_map:
 
@@ -96,7 +96,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: anzhiyu
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
