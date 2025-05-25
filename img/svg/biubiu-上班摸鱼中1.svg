@@ -1,0 +1,67 @@
+<svg width="220" height="60" viewBox="0 0 220 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- 渐变定义 -->
+  <defs>
+    <linearGradient id="workCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="shadowGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#000000;stop-opacity:0.1" />
+      <stop offset="100%" style="stop-color:#000000;stop-opacity:0.3" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- 阴影 -->
+  <rect x="2" y="4" width="216" height="54" rx="12" ry="12" fill="url(#shadowGradient)" opacity="0.3"/>
+  
+  <!-- 主卡片背景 -->
+  <rect x="0" y="2" width="216" height="54" rx="12" ry="12" fill="url(#workCardGradient)" stroke="#ffffff" stroke-width="1" opacity="0.95"/>
+  
+  <!-- 内层高光 -->
+  <rect x="2" y="4" width="212" height="50" rx="10" ry="10" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 装饰小鱼图标 -->
+  <g transform="translate(15,15)">
+    <ellipse cx="0" cy="0" rx="8" ry="4" fill="#ff9a56" opacity="0.8" filter="url(#softGlow)"/>
+    <circle cx="-3" cy="-1" r="1" fill="#ffffff"/>
+    <polygon points="8,0 12,-2 12,2" fill="#ff9a56" opacity="0.8"/>
+    <path d="M-8,-2 Q-12,0 -8,2" stroke="#ff9a56" stroke-width="1" fill="none" opacity="0.6"/>
+  </g>
+  
+  <!-- 装饰气泡 -->
+  <circle cx="35" cy="18" r="2" fill="#ffffff" opacity="0.6"/>
+  <circle cx="40" cy="15" r="1.5" fill="#ffffff" opacity="0.4"/>
+  <circle cx="43" cy="20" r="1" fill="#ffffff" opacity="0.5"/>
+  
+  <!-- 主文本 -->
+  <text x="110" y="25" font-family="'Arial', '微软雅黑', sans-serif" font-size="14" font-weight="bold" fill="#ffffff" text-anchor="middle" filter="url(#glow)">
+    biubiu-上班摸鱼中
+  </text>
+  
+  <!-- 表情符号 -->
+  <text x="110" y="45" font-family="'Arial', sans-serif" font-size="16" fill="#ffeb3b" text-anchor="middle" filter="url(#glow)">
+    (づ￣ 3￣)づ
+  </text>
+  
+  <!-- 右侧装饰波浪 -->
+  <path d="M185,15 Q190,12 195,15 T205,15" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M185,25 Q190,22 195,25 T205,25" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.3"/>
+  
+  <!-- 装饰星星 -->
+  <polygon points="200,35 201,37 203,37 202,38 202,40 200,39 198,40 198,38 197,37 199,37" fill="#ffeb3b" opacity="0.7"/>
+  <polygon points="190,40 191,41 192,41 191,42 191,43 190,42 189,43 189,42 188,41 189,41" fill="#ff9a56" opacity="0.6"/>
+</svg>
