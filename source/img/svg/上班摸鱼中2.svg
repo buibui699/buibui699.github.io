@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="190" height="36" font-family="'Poppins', 'Helvetica Neue', 'Arial', 'Noto Sans SC', 'Microsoft YaHei', sans-serif">
+  <title>biubiu-上班摸鱼中</title>
+  <defs>
+    <linearGradient id="coolCardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#84FAB0;stop-opacity:1"></stop> <stop offset="100%" style="stop-color:#8FD3F4;stop-opacity:1"></stop> </linearGradient>
+    <filter id="modernShadow" height="150%" width="140%" x="-20%" y="-20%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"></feGaussianBlur>
+      <feOffset dx="1.5" dy="1.5" in="blur" result="offsetBlur"></feOffset>
+      <feFlood flood-color="#000000" flood-opacity="0.12" result="offsetColor"></feFlood>
+      <feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetShadow"></feComposite>
+      <feMerge>
+        <feMergeNode in="offsetShadow"></feMergeNode>
+        <feMergeNode in="SourceGraphic"></feMergeNode>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="1" y="1" width="188" height="34" rx="7" ry="7" fill="url(#coolCardGradient)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8" style="filter: url(#modernShadow);"></rect>
+
+  <g id="drive-icon-white" transform="translate(12, 10.5) scale(0.55)">
+    <path d="M23.387 0H7.88L0 12.781H7.88L15.625 0H23.387Z" fill="#FFFFFF" fill-opacity="0.8"></path>
+    <path d="M0 12.781L7.88 25.438L15.625 12.781L7.88 0L0 12.781Z" fill="#FFFFFF"></path>
+    <path d="M7.88 25.438H23.387L31.25 12.781H15.625L7.88 25.438Z" fill="#FFFFFF" fill-opacity="0.6"></path>
+  </g>
+
+  <text x="36" y="22.5" font-size="13px" fill="#FFFFFF" font-weight="600">biubiu</text>
+
+  <line x1="82" y1="9" x2="82" y2="27" stroke="rgba(255,255,255,0.5)" stroke-width="1"></line>
+
+  <text x="92" y="22.5" font-size="13px" fill="#FFFFFF" font-weight="500">上班摸鱼中</text>
+
+</svg>

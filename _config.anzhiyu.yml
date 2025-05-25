@@ -1,25 +1,25 @@
 menu:
    文章: # 文章菜单组
-     隧道: /archives/ || anzhiyu-icon-box-archive # 存档（隧道）
+     时间轴: /archives/ || anzhiyu-icon-box-archive # 存档（隧道）
      分类: /categories/ || anzhiyu-icon-shapes # 分类
      标签: /tags/ || anzhiyu-icon-tags # 标签
 
    友链: # 友链菜单组
-  #   友人帐: /link/ || anzhiyu-icon-link # 友人帐 (已注释掉)
+   #  友人帐: /link/ || anzhiyu-icon-link # 友人帐 (已注释掉)
      朋友圈: /fcircle/ || anzhiyu-icon-artstation # 朋友圈
      留言板: /comments/ || anzhiyu-icon-envelope # 留言板
 
    我的: # 我的菜单组
      音乐馆: /music/ || anzhiyu-icon-music # 音乐馆
-  #   追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
-  #   相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
+     追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
+     相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
      小空调: /air-conditioner/ || anzhiyu-icon-fan # 小空调
 
    关于: # 关于菜单组
      关于本人: /about/ || anzhiyu-icon-paper-plane # 关于本人
-     闲言碎语: /essay/ || anzhiyu-icon-lightbulb # 闲言碎语
+    # 闲言碎语: /essay/ || anzhiyu-icon-lightbulb # 闲言碎语
      随便逛逛: javascript:toRandomPost() || anzhiyu-icon-shoe-prints1 # 随便逛逛 (执行JS函数)
-
+   #  我的装备: /equipment/ || anzhiyu-icon-dice-d20
 # nav相关配置 (顶部导航栏相关配置)
 nav:
   enable: false # 是否启用顶部导航栏
@@ -164,7 +164,7 @@ cover:
   position: left # 首页文章封面显示位置
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover: # 默认封面图片列表 (可设置多个随机显示)
-    - /img/default_cover.jpg
+   # - /img/default_cover.jpg
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
@@ -203,7 +203,7 @@ mainTone:
 # wordcount (字数统计)————————！！！！会报错 (如果报错，请检查插件或配置)
 # see https://blog.anheyu.com/posts/c27d.html(参见...)
 wordcount:
-  enable: false # 是否启用字数统计
+  enable: true # 是否启用字数统计
   post_wordcount: true # 文章页是否显示字数
   min2read: true # 是否显示预计阅读时间
   total_wordcount: true # 是否显示全站总字数 (通常在页脚)
@@ -248,10 +248,10 @@ post_copyright: # 文章版权声明
 reward:
   enable: false
   QR_code:
-    - img: https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-weichat.png
+    - img: 
       link:
       text: 微信
-    - img: https://npm.elemecdn.com/anzhiyu-blog@1.1.6/img/post/common/qrcode-alipay.png
+    - img: 
       link:
       text: 支付宝
 
@@ -275,7 +275,7 @@ related_post:
   date_type: created # or created or updated 文章日期显示创建日或者更新日 (相关文章显示创建日期或更新日期)
 
 # figcaption (图片描述文字)
-photofigcaption: true # 是否为图片启用 figcaption (通常用于显示图片的 alt 或 title 文本)
+photofigcaption: false # 是否为图片启用 figcaption (通常用于显示图片的 alt 或 title 文本)
 
 # post_pagination (文章分页导航，即上一篇/下一篇)
 # value: 1 || 2 || 3 || 4 || false (可选值)
@@ -284,13 +284,13 @@ photofigcaption: true # 是否为图片启用 figcaption (通常用于显示图�
 # 3: 只有下一篇，并且只在文章滚动到评论区时显示下一篇文章(旧文章)
 # 4: 只有下一篇，并且只在文章滚动到评论区时显示下一篇文章(旧文章) 显示图片cover
 # false: disable pagination (禁用分页导航)
-post_pagination: 2 # 选择分页导航的模式
+post_pagination: false # 选择分页导航的模式
 
 # Displays outdated notice for a post (文章过期提醒)
 noticeOutdate:
   enable: true # 是否启用文章过期提醒
   style: flat # style: simple/flat (样式：简单/扁平)
-  limit_day: 365 # When will it be shown (多少天未更新的文章会显示提醒)
+  limit_day: 180 # When will it be shown (多少天未更新的文章会显示提醒)
   position: top # position: top/bottom (提醒显示位置：顶部/底部)
   message_prev: It has been # 提醒消息前缀 (例如：距离上次更新已有)
   message_next: days since the last update, the content of the article may be outdated. # 提醒消息后缀 (例如：天，文章内容可能已过时。)
@@ -316,7 +316,7 @@ addtoany:
 comments:
   # Up to two comments system, the first will be shown as default (最多两个评论系统, 第一个将作为默认显示)
   # Choose: Valine/Waline/Twikoo/Artalk (选择评论系统)
-  use: # Twikoo/Waline (使用的评论系统，例如 Twikoo 或 Waline)
+  use: Twikoo # Twikoo/Waline (使用的评论系统，例如 Twikoo 或 Waline)
   text: true # Display the comment name next to the button (在切换评论的按钮旁边显示评论系统名称)
   # lazyload: The comment system will be load when comment element enters the browser's viewport. (当评论元素进入浏览器视口时加载评论系统。)
   # If you set it to true, the comment count will be invalid (如果设置为 true, 评论计数功能可能无效或不实时)
@@ -434,9 +434,9 @@ footer:
   runtime: # 网站运行时间显示
     enable: true # 是否启用
     launch_time: 05/10/2025 00:00:00 # 网站上线时间 (格式: 月/日/年 时:分:秒)
-    work_img: /img/1 (2).gif #工作时间描述图
+    work_img: /img/svg/biubiu-上班摸鱼中1.svg #工作时间描述图
     work_description: 距离月入25k也就还差一个大佬带我~ # 工作时间描述
-    offduty_img: /img/tx.gif
+    offduty_img: /img/svg/biubiu-下班啦1.svg
     offduty_description: 下班了就该开开心心的玩耍，嘿嘿~ # 非工作时间描述
   # 徽标部分配置项 https://shields.io/
   # https://img.shields.io/badge/CDN-jsDelivr-orange?style=flat&logo=jsDelivr (徽标示例)
@@ -452,9 +452,9 @@ footer:
       - link: https://www.dogecloud.com/
         shields: https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/CDN-多吉云-3693F3.svg
         message: 本站使用多吉云为静态资源提供CDN加速
-      - link: https://github.com/
-        shields: https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg
-        message: 本站项目由Github托管
+     # - link: https://github.com/
+     #   shields: https://npm.elemecdn.com/anzhiyu-blog@2.1.5/img/badge/Source-Github.svg
+     #   message: 本站项目由Github托管
       - link: http://creativecommons.org/licenses/by-nc-sa/4.0/
         shields: https://npm.elemecdn.com/anzhiyu-blog@2.2.0/img/badge/Copyright-BY-NC-SA.svg
         message: 本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可
@@ -1059,18 +1059,18 @@ home_top:
   subTitle: 万物可爱。 # 副标题
   siteText: anheyu.com # 站点文字/域名显示
   category: # 分类快捷入口列表
-    - name: 阅读 # 名称
-      path: /categories/阅读笔记/ # 路径
+    - name: 宾客来 # 名称
+      path: https://blog.142556.xyz # 路径
       shadow: var(--anzhiyu-shadow-blue) # 阴影颜色 (CSS变量)
       class: blue # CSS 类名 (用于自定义样式)
       icon: anzhiyu-icon-dove # 图标类名
-    - name: 诗词
-      path: /categories/诗词赏析/
+    - name: 一笑
+      path: https://blog.142556.xyz
       shadow: var(--anzhiyu-shadow-red)
       class: red
       icon: anzhiyu-icon-fire
-    - name: 生活
-      path: /categories/生活日常/
+    - name: 解千愁
+      path: https://blog.142556.xyz
       shadow: var(--anzhiyu-shadow-green)
       class: green
       icon: anzhiyu-icon-book
@@ -1080,18 +1080,18 @@ home_top:
     swiper_css: https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css #swiper css依赖
     swiper_js: https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.js #swiper js依赖
   banner: # 首页顶部横幅广告/推广图
-    tips: 新品主题 # 提示文字
-    title: Theme-AnZhiYu # 标题
-    image: https://bu.dusays.com/2023/05/13/645fa3cf90d70.webp # 图片链接
-    link: https://docs.anheyu.com/ # 点击链接
+    tips:  # 提示文字
+    title: 祝你————2025——————顺风顺水，顺财神，身体健康，万事如意 # 标题
+    image: /img/右上角背景800630.png # 图片链接
+    link: https://blog.142556.xyz # 点击链接
 
 # 朋友圈配置
 friends_vue:
-  enable: false # 是否启用朋友圈页面 (通常指友情链接聚合页)
+  enable: true # 是否启用朋友圈页面 (通常指友情链接聚合页)
   vue_js: https://npm.elemecdn.com/anzhiyu-theme-static@1.1.1/friends/index.4f887d95.js # Vue.js 依赖 (朋友圈页面可能用Vue构建)
   apiurl: # 朋友圈后端地址 (用于获取友链文章数据)
   top_tips: 使用 友链朋友圈 订阅友链最新文章 # 页面顶部提示文字
-  top_background: # 页面顶部背景图片或颜色
+  top_background: "#87CEFA" # 页面顶部背景图片或颜色
 
 # 深色模式粒子效果canvas
 universe:
@@ -1145,7 +1145,7 @@ music_page_default: nav_music # 音乐页面 (/music) 默认加载的歌单来�
 # 评论匿名邮箱 (如果评论系统支持或主题有此功能)
 visitorMail:
   enable: true # 是否启用匿名评论时的默认邮箱后缀
-  mail: "" # 匿名评论的邮箱后缀 (如 @example.com)
+  mail: "@example.com" # 匿名评论的邮箱后缀 (如 @example.com)
 
 # ptool 文章底部工具 (文章页底部的一系列工具按钮)
 ptool:
@@ -1153,7 +1153,7 @@ ptool:
   share_mobile: true # 是否在移动端显示分享按钮
   share_weibo: true # 是否显示分享到微博按钮
   share_copyurl: true # 是否显示复制链接按钮
-  categories: false # 是否显示分类信息
+  categories: true # 是否显示分类信息
   mode: # 运营模式与责任，不配置不显示 (例如转载声明、原创声明等)
 
 # 欢迎语配置 (根据时间段显示不同的欢迎语)
@@ -1231,13 +1231,13 @@ rightClickMenu:
 # (首页“随便逛逛”区域的显示模式：人物形象 / 技能点。后者需要配置 creativity.yml)
 peoplecanvas:
   enable: true # 是否启用人物形象模式
-  img: https://upload-bbs.miyoushe.com/upload/2024/07/27/125766904/ba62475f396df9de3316a08ed9e65d86_5680958632268053399..png # 人物图片链接
+  img: /img/svg/竖条文字左上角.svg # 人物图片链接
 
 # 动效 (各种动态效果开关)
 dynamicEffect:
   postTopWave: true # 文章顶部波浪效果
   postTopRollZoomInfo: true # 文章顶部滚动时缩放 (文章标题等信息随滚动缩放)
-  pageCommentsRollZoom: false # 非文章页面评论滚动时缩放显示（仅仅Twikoo生效） (非文章页的评论区，滚动到视窗时缩放显示)
+  pageCommentsRollZoom: true # 非文章页面评论滚动时缩放显示（仅仅Twikoo生效） (非文章页的评论区，滚动到视窗时缩放显示)
 
 # Inject (代码注入)
 # Insert the code to head (before '</head>' tag) and the bottom (before '</body>' tag)

@@ -1,0 +1,30 @@
+<svg width="152" height="30" xmlns="http://www.w3.org/2000/svg" font-family="Verdana, Geneva, 'Noto Sans SC', 'Microsoft YaHei', DejaVu Sans, sans-serif">
+  <title>biubiu-上班摸鱼中</title>
+  <defs>
+    <filter id="dropshadow" height="130%" width="120%" x="-10%" y="-10%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur"/>
+      <feOffset dx="0.5" dy="0.5" in="blur" result="offsetBlur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.15" result="offsetColor"/>
+      <feComposite in="offsetColor" in2="offsetBlur" operator="in" result="offsetBlur"/>
+      <feMerge>
+        <feMergeNode in="offsetBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <rect x="0.5" y="0.5" width="151" height="29" rx="4" ry="4" fill="#f0f0f0" stroke="#cccccc" stroke-width="1" style="filter: url(#dropshadow);"/>
+
+  <g id="drive-icon" transform="translate(8, 8.5) scale(0.55)">
+    <path d="M23.387 0H7.88L0 12.781H7.88L15.625 0H23.387Z" fill="#F9BC05"/>
+    <path d="M0 12.781L7.88 25.438L15.625 12.781L7.88 0L0 12.781Z" fill="#4285F4"/>
+    <path d="M7.88 25.438H23.387L31.25 12.781H15.625L7.88 25.438Z" fill="#34A853"/>
+  </g>
+
+  <text x="30" y="19" font-size="11px" fill="#333333" font-weight="600">biubiu</text>
+
+  <line x1="73" y1="7" x2="73" y2="23" stroke="#bbbbbb" stroke-width="1"/>
+
+  <text x="81" y="19" font-size="11px" fill="#444444">上班摸鱼中</text>
+
+</svg>

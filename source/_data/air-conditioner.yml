@@ -1,0 +1,41 @@
+# 便携小空调配置文件
+title: 便携小空调 - 为你的夏日带去清凉！
+description: 一个有趣的互动小空调页面
+
+# 默认设置
+default_temperature: 27
+min_temperature: 16
+max_temperature: 30
+default_mode: cooling
+
+# 页面样式配置
+theme:
+  primary_color: "#74b9ff"
+  secondary_color: "#0984e3"
+  success_color: "#00b894"
+  warning_color: "#fdcb6e"
+  
+# 音效设置
+audio:
+  enabled: true
+  click_volume: 0.3
+  fan_volume: 0.25
+
+# 页面文本
+text:
+  title: "便携小空调"
+  tip: "💡 Tip: 为你的夏日带去清凉！"
+  status:
+    off: "设备已关闭"
+    cooling: "制冷模式"
+    heating: "制热模式"
+  buttons:
+    power: "电源开关"
+    cooling: "制冷模式"
+    heating: "制热模式"
+    temp_up: "升高温度"
+    temp_down: "降低温度"
+
+# 页脚信息
+footer:
+  copyright: "2025 by 辋川"
