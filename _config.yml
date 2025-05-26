@@ -118,31 +118,33 @@ envelope_comment:
 
 
 # 追番插件
+# 插件的 GitHub 仓库地址，方便查找文档和更新
 # https://github.com/HCLonely/hexo-bilibili-bangumi
-bangumi: # 追番设置
-  enable: true
-  source: bili
-  path:
-  vmid: 372204786
-  title: "追番列表"
-  quote: "生命不息，追番不止！"
-  show: 1
-  lazyload: false
-  loading:
-  showMyComment: false
-  pagination: false
-  metaColor:
-  color:
-  webp:
-  progress:
-  extraOrder:
-  proxy:
-    host: "代理host"
-    port: "代理端口"
-  extra_options:
-    top_img: false
-    lazyload:
-      enable: false
+
+bangumi: # 追番插件的全局配置命名空间
+  enable: true # 是否启用追番插件功能。true 为启用，false 为禁用。
+  source: bili # 数据源选择。'bili' 指的是从 Bilibili 获取数据。目前似乎只支持 'bili'。
+  path: # 生成的追番页面的路径。如果留空，插件会使用默认路径 (通常是 /bangumis/index.html 或类似)。
+  vmid: 372204786 # 你的 Bilibili 用户 UID (User ID)。插件会根据这个 UID 获取你的追番列表。
+  title: "追番列表" # 在生成的追番页面上显示的标题。
+  quote: "生命不息，追番不止！" # 显示在追番页面顶部的一句引言或座右铭。
+  show: 1 # 要显示的追番类型。根据插件文档：0 (全部番剧), 1 (想看), 2 (在看), 3 (看过)。默认为 0。这里设置为 1，表示显示“想看”的番剧。
+  lazyload: false # 是否启用图片懒加载。false 表示不启用，图片会立即加载。true 表示启用，图片会滚动到可视区域再加载。
+  loading: # 图片加载时的占位符图片或加载动画的 URL。如果 lazyload 为 true，这个选项会比较有用。留空则使用插件默认。
+  showMyComment: false # 是否在番剧条目下方显示你对该番剧的评论。false 表示不显示。
+  pagination: false # 是否对追番列表启用分页。false 表示不分页，所有番剧显示在一页。如果番剧数量很多，建议开启。
+  metaColor: # 番剧信息（如观看进度、标签等）的文字颜色。留空则使用插件默认颜色。可以设置为如 "#FF0000" 的十六进制颜色码。
+  color: # 追番页面主要元素的强调色或主题色。留空则使用插件默认颜色。
+  webp: # 是否优先使用 webp 格式的封面图片（如果B站CDN提供）。某些插件可能支持此选项以优化图片大小。留空则根据插件默认行为。
+  progress: # 关于观看进度的显示设置。留空可能表示使用默认设置（例如，是否显示进度条，进度条颜色等）。具体配置需查阅插件文档。
+  extraOrder: # 额外的排序方式。例如，可以自定义排序字段和顺序。留空则使用B站的默认排序或插件的默认排序。
+  proxy: # 代理服务器设置，如果你的网络环境需要通过代理才能访问 Bilibili API。
+    host: "代理host" # 代理服务器的主机名或 IP 地址。
+    port: "代理端口" # 代理服务器的端口号。
+  extra_options: # 额外的、可能不常用或特定主题才支持的自定义选项。
+    top_img: false # 是否在追番页面顶部显示一个背景大图（banner）。false 表示不显示。
+    lazyload: # 针对 extra_options 内的懒加载特定设置，可能会覆盖全局的 lazyload 设置或提供更细致的控制。
+      enable: false # 是否启用此处的懒加载设置。这里设置为 false，与全局的 lazyload: false 效果上可能一致，具体看插件实现逻辑。
 
 
 
@@ -150,7 +152,7 @@ bangumi: # 追番设置
 # https://github.com/MoePlayer/hexo-tag-aplayer/blob/master/docs/README-zh_cn.md
 aplayer:
   meting: true
-  asset_inject: false
+  asset_inject: true
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
