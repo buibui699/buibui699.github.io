@@ -661,7 +661,7 @@ h2Divider: true # 是否在文章的 H2 标题下自动添加分隔线
 table_interlaced_discoloration: true # 是否启用表格的隔行变色效果
 
 # 首页双栏显示
-article_double_row: false  #首页文章列表是否双栏显示 (瀑布流或类似布局)
+article_double_row: true  #首页文章列表是否双栏显示 (瀑布流或类似布局)
 
 # The top_img settings of home page (首页顶部图片设置)
 # default: top img - full screen, site info - middle (默认top_img全屏，site_info在中间)
@@ -817,7 +817,7 @@ preloader:
 # --------------------------------------
 aside:
   enable: true # 是否启用侧边栏
-  hide: true # 是否默认隐藏侧边栏 (可由按钮切换)
+  hide: false # 是否默认隐藏侧边栏 (可由按钮切换)
   button: true # 是否显示切换侧边栏的按钮
   mobile: false # display on mobile (移动端是否显示侧边栏)
   position: right # left or right (侧边栏位置：左侧或右侧)
