@@ -1,6 +1,6 @@
 ---
 title: 世界各地风景
-top_img: https://img.090227.xyz/file/ae62475a131f3734a201c.png
+top_img: 
 date: 2025-05-25 15:59:00
 type: "album_detail"
 updated:

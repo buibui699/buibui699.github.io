@@ -1,6 +1,6 @@
 ---
 title: 朋友圈
-top_img: https://img.090227.xyz/file/ae62475a131f3734a201c.png
+top_img: 
 date: 2025-05-25 15:51:36
 type: "fcircle"
 updated:

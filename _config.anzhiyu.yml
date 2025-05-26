@@ -164,7 +164,13 @@ cover:
   position: left # 首页文章封面显示位置
   # When cover is not set, the default cover is displayed (当没有设置cover时，默认的封面显示)
   default_cover: # 默认封面图片列表 (可设置多个随机显示)
-   # - /img/default_cover.jpg
+    - /img/文章封面图/剑.jpg
+    - /img/文章封面图/默认封面图2.svg  
+    - /img/文章封面图/默认文章封面图.svg
+    - /img/文章封面图/树林1.png
+    - /img/文章封面图/树林2.png
+    - /img/文章封面图/树林3.png
+
 
 # Replace Broken Images (替换无法显示的图片)
 error_img:
@@ -200,7 +206,7 @@ mainTone:
   api: https://img2color-go.vercel.app/api?img= # mode为api时可填写 (API接口地址)
   cover_change: true # 整篇文章跟随cover修改主色调 (如卡片背景色)
 
-# wordcount (字数统计)————————！！！！会报错 (如果报错，请检查插件或配置)
+# wordcount (字数统计)————————
 # see https://blog.anheyu.com/posts/c27d.html(参见...)
 wordcount:
   enable: true # 是否启用字数统计
@@ -353,8 +359,8 @@ valine:
 waline:
   serverURL: # Waline server address url (Waline 服务器地址 URL)
   bg: # Waline background (Waline 评论区背景图片)
-  pageview: false # 是否启用 Waline 的页面浏览量统计
-  meta_css: false # 是否引入 waline-meta.css ,以便显示 meta图标 (如评论数图标)
+  pageview: true # 是否启用 Waline 的页面浏览量统计
+  meta_css: true # 是否引入 waline-meta.css ,以便显示 meta图标 (如评论数图标)
   imageUploader: true # 配置为 > 换行后可自定义图片上传逻辑，示例: https://waline.js.org/cookbook/customize/upload-image.html#案例
   # 以下为可选配置，后续若有新增/修改配置参数可在此自行添加/修改
   option: # Waline 其他自定义选项
@@ -364,7 +370,7 @@ waline:
 twikoo:
   envId: #腾讯云开发环境 ID
   region: #环境地域 (如果不是上海，需要配置)
-  visitor: false # 是否启用 Twikoo 的访客统计
+  visitor: true # 是否启用 Twikoo 的访客统计
   option: # Twikoo 其他自定义选项
 
 # Artalk
@@ -395,10 +401,10 @@ giscus:
 
 # Chat Button [recommend] (聊天按钮 [推荐])
 # It will create a button in the bottom right corner of website, and hide the origin button (它将在网站右下角创建一个按钮, 并隐藏聊天服务提供商的原始按钮)
-chat_btn: false # 是否使用主题统一的聊天按钮替换服务商原始按钮
+chat_btn: true # 是否使用主题统一的聊天按钮替换服务商原始按钮
 
 # The origin chat button is displayed when scrolling up, and the button is hidden when scrolling down (原始聊天按钮在向上滚动时显示, 向下滚动时隐藏)
-chat_hide_show: false # 是否启用聊天按钮随滚动显隐的效果
+chat_hide_show: true # 是否启用聊天按钮随滚动显隐的效果
 
 # chatra
 # https://chatra.io/
@@ -430,7 +436,7 @@ footer:
   owner: # 网站拥有者信息
     enable: true # 是否显示
     since: 2025 # 网站起始年份
-  custom_text: # 自定义页脚文本 (HTML)
+  custom_text: 长安常安！ # 自定义页脚文本 (HTML)
   runtime: # 网站运行时间显示
     enable: true # 是否启用
     launch_time: 05/10/2025 00:00:00 # 网站上线时间 (格式: 月/日/年 时:分:秒)
@@ -524,38 +530,44 @@ footer:
       #     - title: 版权协议
       #       link: /copyright/
   footerBar: # 最底部信息栏
-    enable: false # 是否启用
+    enable: true # 是否启用
     authorLink: / # 作者链接 (通常链接到首页或关于页)
     cc: # Creative Commons 许可协议信息
-      enable: false # 是否显示
+      enable: true # 是否显示
       link: /copyright # 协议详情页链接
-    #linkList: (链接列表，已注释掉)
-    #  - link: https://github.com/anzhiyu-c/hexo-theme-anzhiyu
-     #   text: 主题
+    linkList: 
+      - link: https://blog.142556.xyz
+        text: 博客
+     # - link: https://image.anheyu.com
      # - link: https://image.anheyu.com
      #   text: 图床
      # - link: https://beian.miit.gov.cn/
      #   text: 湘ICP备-xxxxxxx号 (备案号)
-    subTitle: # 页脚副标题 (通常是一句话)
-      enable: true # 是否启用
+    subTitle:
+      enable: true
       # Typewriter Effect (打字效果)
-      effect: true # 是否启用打字效果
+      effect: true
       # Effect Speed Options (打字效果速度参数)
-      startDelay: 300 # time before typing starts in milliseconds (输入开始前的延迟时间, 毫秒)
-      typeSpeed: 150 # type speed in milliseconds (打字速度, 毫秒)
-      backSpeed: 50 # backspacing speed in milliseconds (退格速度, 毫秒)
+      startDelay: 300 # time before typing starts in milliseconds
+      typeSpeed: 150 # type speed in milliseconds
+      backSpeed: 50 # backspacing speed in milliseconds
       # loop (循环打字)
-      loop: true # 是否循环播放打字效果
-      # source 调用第三方服务 (一言、今日诗词等)
+      loop: true
+      # source 调用第三方服务
       # source: false 关闭调用
-      #source: 1  调用一言网的一句话（简体） https://hitokoto.cn/
+      # source: 1  调用一言网的一句话（简体） https://hitokoto.cn/
       # source: 2  调用一句网（简体） http://yijuzhan.com/
-      # source: 3  调用今日诗词（简体） https://www.jinrishici.com/
+      #source: 3   #https://www.jinrishici.com/  #调用今日诗词（简体） 
       # subtitle 会先显示 source , 再显示 sub 的内容
-      source: false # 选择调用的服务 (1, 2, 3 或 false)
+      source: 3
       # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
-      sub: # 自定义副标题列表 (如果 source 未配置或获取失败，则从此列表中选取)
-       生活明朗, 万物可爱, 人间值得, 未来可期.
+      sub:
+         - 生活明朗&#44; 万物可爱&#44; 人间值得&#44; 未来可期.
+         - 天下非一人之天下，乃天下人之天下也.
+         - 苍山负雪，明烛天南.
+         - 愿你我：活成清欢，活成四季，淡若秋水，静无涟漪.
+         - 安稳于日常，浅喜于光阴，阅己，悦己，乐己！
+
 
 # Analysis (网站分析统计)
 # --------------------------------------
@@ -764,26 +776,30 @@ hr_icon:
   icon-top: # 图标距离顶部的偏移量 (CSS值)
 
 # the subtitle on homepage (主页副标题)
-subtitle:
-  enable: true # 是否启用主页副标题
-  # Typewriter Effect (打字效果)
-  effect: true # 是否启用打字效果
-  # Effect Speed Options (打字效果速度参数)
-  startDelay: 300 # time before typing starts in milliseconds (输入开始前的延迟时间, 毫秒)
-  typeSpeed: 150 # type speed in milliseconds (打字速度, 毫秒)
-  backSpeed: 50 # backspacing speed in milliseconds (退格速度, 毫秒)
-  # loop (循环打字)
-  loop: true # 是否循环播放
-  # source 调用第三方服务 (一言等)
-  # source: false 关闭调用
-  # source: 1  调用一言网的一句话（简体） https://hitokoto.cn/
-  # source: 2  调用一句网（简体） http://yijuzhan.com/
-  # source: 3  调用今日诗词（简体） https://www.jinrishici.com/
-  # subtitle 会先显示 source , 再显示 sub 的内容
-  source: false # 选择调用的服务
-  # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
-  sub: # 自定义副标题列表
-     - 生活明朗,万物可爱,人间值得,未来可期.
+    subTitle:
+      enable: true
+      # Typewriter Effect (打字效果)
+      effect: true
+      # Effect Speed Options (打字效果速度参数)
+      startDelay: 300 # time before typing starts in milliseconds
+      typeSpeed: 150 # type speed in milliseconds
+      backSpeed: 50 # backspacing speed in milliseconds
+      # loop (循环打字)
+      loop: true
+      # source 调用第三方服务
+      # source: false 关闭调用
+      # source: 1  调用一言网的一句话（简体） https://hitokoto.cn/
+      # source: 2  调用一句网（简体） http://yijuzhan.com/
+      #source: 3   #https://www.jinrishici.com/  #调用今日诗词（简体） 
+      # subtitle 会先显示 source , 再显示 sub 的内容
+      source: 3
+      # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
+      sub:
+         - 生活明朗&#44; 万物可爱&#44; 人间值得&#44; 未来可期.
+         - 天下非一人之天下，乃天下人之天下也.
+         - 苍山负雪，明烛天南.
+         - 愿你我：活成清欢，活成四季，淡若秋水，静无涟漪.
+         - 安稳于日常，浅喜于光阴，阅己，悦己，乐己！
 
 # Loading Animation (加载动画)
 preloader:
@@ -801,9 +817,9 @@ preloader:
 # --------------------------------------
 aside:
   enable: true # 是否启用侧边栏
-  hide: false # 是否默认隐藏侧边栏 (可由按钮切换)
+  hide: true # 是否默认隐藏侧边栏 (可由按钮切换)
   button: true # 是否显示切换侧边栏的按钮
-  mobile: true # display on mobile (移动端是否显示侧边栏)
+  mobile: false # display on mobile (移动端是否显示侧边栏)
   position: right # left or right (侧边栏位置：左侧或右侧)
   display: # 控制对应详情页面是否显示侧边栏
     archive: true # 归档页是否显示侧边栏
@@ -1091,7 +1107,7 @@ friends_vue:
   vue_js: https://npm.elemecdn.com/anzhiyu-theme-static@1.1.1/friends/index.4f887d95.js # Vue.js 依赖 (朋友圈页面可能用Vue构建)
   apiurl: # 朋友圈后端地址 (用于获取友链文章数据)
   top_tips: 使用 友链朋友圈 订阅友链最新文章 # 页面顶部提示文字
-  top_background: "#87CEFA" # 页面顶部背景图片或颜色
+  top_background: /img/1-400x400.jpg # 页面顶部背景图片或颜色
 
 # 深色模式粒子效果canvas
 universe:
@@ -1247,6 +1263,7 @@ inject:
   head: # 注入到 <head> 标签闭合前
     # 自定义css
     # - <link rel="stylesheet" href="/css/custom.css" media="defer" onload="this.media='all'">
+
 
   bottom: # 注入到 </body> 标签闭合前
     # 自定义js

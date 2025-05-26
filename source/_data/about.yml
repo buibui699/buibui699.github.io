@@ -56,7 +56,7 @@
   personalities:
     author_name: 执政官
     personality_type: ESFJ-A
-    photo_url: https://bu.dusays.com/2023/07/05/64a4c63495ac5.jpg
+    photo_url: /img/壁纸.png
     personality_img: https://npm.elemecdn.com/anzhiyu-blog@2.0.8/img/svg/ESFJ-A.svg
     name_url: https://www.16personalities.com/ch/esfj-%E4%BA%BA%E6%A0%BC
   maxim:
@@ -64,41 +64,47 @@
     maxim_top: 生活明朗，
     maxim_bottom: 万物可爱。
   buff:
-    buff_tips: 
-    buff_top: 
-    buff_bottom: 
+    buff_tips: 我的Buff
+    buff_top: 好奇心驱动MAX
+    buff_bottom: 困难挑战？小Case！
   game:
     game_tips: 爱好游戏
     game_title: 燕云十六声
-    game_uid: "UID: "
-    game_bg: /img/yyun1-400x400.jpg
+    #game_uid: "UID: "
+    game_bg: /img/yyun-400x400.jpg
   comic:
     comic_tips: 爱好番剧
     comic_title: 追番
     comic_list:
-      - name: 约定的梦幻岛
-        href: https://www.bilibili.com/bangumi/media/md5267750/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
-        cover: https://bu.dusays.com/2023/05/27/647166c44b414.webp
-      - name: 咒术回战
-        href: https://www.bilibili.com/bangumi/media/md28229899/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
-        cover: https://bu.dusays.com/2023/05/24/646db4398832e.webp
-      - name: 紫罗兰永恒花园
-        href: https://www.bilibili.com/bangumi/media/md8892/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
-        cover: https://bu.dusays.com/2023/05/24/646db43983d99.webp
-      - name: 鬼灭之刃
-        href: https://www.bilibili.com/bangumi/media/md22718131/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
-        cover: https://bu.dusays.com/2023/05/24/646db439856a0.webp
-      - name: JOJO的奇妙冒险 黄金之风
-        href: https://www.bilibili.com/bangumi/media/md135652/?spm_id_from=666.25.b_6d656469615f6d6f64756c65.1
-        cover: https://bu.dusays.com/2023/05/30/64760e38d651a.webp
+      - name: 牧神记
+        href: https://www.bilibili.com/bangumi/media/md21082961
+        cover: /img/动漫/牧神记.jpg
+      - name: 狐妖小红娘
+        href: https://www.bilibili.com/bangumi/play/ss2543
+        cover: /img/动漫/狐妖小红娘.jpg
+      - name: 名侦探柯南
+        href: https://www.bilibili.com/bangumi/media/md28228775
+        cover: /img/动漫/名侦探柯南.jpg
+      - name: 成龙历险记
+        href: https://www.bilibili.com/bangumi/media/md20261822
+        cover: /img/动漫/成龙历险记.jpg
+      - name: 蜡笔小新
+        href: https://www.bilibili.com/bangumi/play/ss6260
+        cover: /img/动漫/蜡笔小新.jpg
+  
+
   like:
-    like_tips: 关注偏好
-    like_title: 数码科技
-    like_bg: https://bu.dusays.com/2022/12/06/638f5f05ce1f7.jpg
-    like_bottom: 手机、电脑软件,电脑、手机美化
+    like_tips: 游戏人物
+    like_title: 满穗
+    like_bg: /img/yx/满穗.jpg
+    like_bottom: 你喜欢穗，还是满穗
   music:
     music_tips: 音乐偏好
-    music_title: 周杰伦、民谣、华语流行
+    music_title: 
+      - 周杰伦
+      - 民谣
+      - 华语流行
+      - 国风
     music_bg: /img/周杰伦.png
     music_link: /music
  # reward_list:        #赞赏部分
