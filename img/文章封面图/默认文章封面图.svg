@@ -1,0 +1,109 @@
+<svg viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- 现代渐变背景 -->
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#667eea"/>
+      <stop offset="50%" stop-color="#764ba2"/>
+      <stop offset="100%" stop-color="#f093fb"/>
+    </linearGradient>
+    
+    <!-- 光晕效果 -->
+    <radialGradient id="glowEffect" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.3"/>
+      <stop offset="70%" stop-color="#ffffff" stop-opacity="0.1"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    
+    <!-- 几何图形渐变 -->
+    <linearGradient id="shapeGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9a9e"/>
+      <stop offset="100%" stop-color="#fecfef"/>
+    </linearGradient>
+    
+    <linearGradient id="shapeGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a8edea"/>
+      <stop offset="100%" stop-color="#fed6e3"/>
+    </linearGradient>
+    
+    <!-- 模糊滤镜 -->
+    <filter id="blur" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+    </filter>
+    
+    <!-- 投影效果 -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- 主背景 -->
+  <rect width="1200" height="600" fill="url(#mainGradient)"/>
+  
+  <!-- 光晕覆盖层 -->
+  <rect width="1200" height="600" fill="url(#glowEffect)"/>
+  
+  <!-- 背景几何图形 -->
+  <!-- 大圆形 -->
+  <circle cx="200" cy="150" r="120" fill="url(#shapeGradient1)" opacity="0.6" filter="url(#blur)"/>
+  <circle cx="1000" cy="450" r="150" fill="url(#shapeGradient2)" opacity="0.5" filter="url(#blur)"/>
+  
+  <!-- 三角形 -->
+  <path d="M800 100 L920 180 L680 180 Z" fill="#ffffff" opacity="0.2" filter="url(#blur)"/>
+  
+  <!-- 矩形 -->
+  <rect x="50" y="400" width="200" height="80" rx="20" fill="#ffffff" opacity="0.15" filter="url(#blur)" transform="rotate(-15 150 440)"/>
+  
+  <!-- 小装饰圆点 -->
+  <circle cx="900" cy="120" r="25" fill="#ffffff" opacity="0.3"/>
+  <circle cx="350" cy="480" r="15" fill="#ffffff" opacity="0.4"/>
+  <circle cx="1100" cy="200" r="20" fill="#ffffff" opacity="0.25"/>
+  
+  <!-- 中央内容区域 -->
+  <rect x="300" y="200" width="600" height="200" rx="15" fill="#ffffff" opacity="0.1" filter="url(#shadow)"/>
+  
+  <!-- 标题区域装饰线条 -->
+  <rect x="350" y="250" width="80" height="4" rx="2" fill="#ffffff" opacity="0.8"/>
+  <rect x="350" y="270" width="120" height="2" rx="1" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- 文本内容占位线条 -->
+  <rect x="350" y="300" width="500" height="3" rx="1.5" fill="#ffffff" opacity="0.4"/>
+  <rect x="350" y="315" width="450" height="3" rx="1.5" fill="#ffffff" opacity="0.4"/>
+  <rect x="350" y="330" width="420" height="3" rx="1.5" fill="#ffffff" opacity="0.4"/>
+  <rect x="350" y="345" width="380" height="3" rx="1.5" fill="#ffffff" opacity="0.4"/>
+  
+  <!-- 微妙的装饰元素 -->
+  <!-- 浮动的小方块 -->
+  <rect x="450" y="150" width="12" height="12" rx="2" fill="#ffffff" opacity="0.3" transform="rotate(45 456 156)"/>
+  <rect x="750" y="380" width="8" height="8" rx="1" fill="#ffffff" opacity="0.4" transform="rotate(30 754 384)"/>
+  <rect x="580" y="480" width="10" height="10" rx="2" fill="#ffffff" opacity="0.35" transform="rotate(60 585 485)"/>
+  
+  <!-- 动态线条 -->
+  <path d="M100 300 Q200 280 300 300 T500 300" stroke="#ffffff" stroke-width="2" fill="none" opacity="0.3"/>
+  <path d="M700 350 Q800 330 900 350 T1100 350" stroke="#ffffff" stroke-width="1.5" fill="none" opacity="0.25"/>
+  
+  <!-- 右下角装饰图标 -->
+  <g transform="translate(1050, 450)" opacity="0.4">
+    <!-- 简化的博客图标 -->
+    <rect x="0" y="0" width="60" height="40" rx="8" fill="#ffffff" opacity="0.3"/>
+    <rect x="8" y="8" width="44" height="3" rx="1.5" fill="#ffffff" opacity="0.6"/>
+    <rect x="8" y="16" width="36" height="2" rx="1" fill="#ffffff" opacity="0.5"/>
+    <rect x="8" y="22" width="40" height="2" rx="1" fill="#ffffff" opacity="0.5"/>
+    <rect x="8" y="28" width="32" height="2" rx="1" fill="#ffffff" opacity="0.5"/>
+  </g>
+  
+  <!-- 左上角装饰星星 -->
+  <g transform="translate(150, 80)" opacity="0.5">
+    <path d="M0 8 L2 2 L8 0 L2 -2 L0 -8 L-2 -2 L-8 0 L-2 2 Z" fill="#ffffff"/>
+  </g>
+  
+  <g transform="translate(950, 180)" opacity="0.4">
+    <path d="M0 6 L1.5 1.5 L6 0 L1.5 -1.5 L0 -6 L-1.5 -1.5 L-6 0 L-1.5 1.5 Z" fill="#ffffff"/>
+  </g>
+  
+  <!-- 额外的光效 -->
+  <ellipse cx="600" cy="100" rx="300" ry="50" fill="#ffffff" opacity="0.1" transform="rotate(-10 600 100)"/>
+  <ellipse cx="600" cy="500" rx="400" ry="60" fill="#ffffff" opacity="0.08" transform="rotate(5 600 500)"/>
+  
+  <!-- 微妙的噪点纹理效果 -->
+  <rect width="1200" height="600" fill="url(#glowEffect)" opacity="0.1"/>
+</svg>

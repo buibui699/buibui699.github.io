@@ -2913,7 +2913,7 @@ hr:hover:before {
 }
 hr:before {
   position: absolute;
-  top: -10px;
+  top: subTitle;
   left: 5%;
   z-index: 1;
   color: var(--hr-before-color);
@@ -9100,6 +9100,11 @@ h1.page-title + .tag-cloud-list {
   margin-top: 20px;
   padding: 20px 24px;
 }
+@media screen and (max-width: 768px) {
+  #aside-content .card-widget:not(#card-toc) {
+    display: none;
+  }
+}
 #aside-content .card-widget .author-info__bottom-group {
   display: -webkit-box;
   display: -moz-box;
@@ -10442,7 +10447,7 @@ h1.page-title + .tag-cloud-list {
 }
 #footer-wrap {
   position: relative;
-  padding: 40px 20px;
+  padding: 40px 20px 0;
   color: var(--light-grey);
   text-align: center;
 }
