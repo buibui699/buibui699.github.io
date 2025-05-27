@@ -20,6 +20,7 @@ menu:
     # 闲言碎语: /essay/ || anzhiyu-icon-lightbulb # 闲言碎语
      随便逛逛: javascript:toRandomPost() || anzhiyu-icon-shoe-prints1 # 随便逛逛 (执行JS函数)
    #  我的装备: /equipment/ || anzhiyu-icon-dice-d20
+   
 # nav相关配置 (顶部导航栏相关配置)
 nav:
   enable: false # 是否启用顶部导航栏
@@ -256,7 +257,7 @@ toc:
   post: true # 文章页是否显示目录
   page: false # 普通页面是否显示目录
   number: true # 目录是否显示编号
-  expand: false # 是否默认展开所有目录项
+  expand: true # 是否默认展开所有目录项
   style_simple: false # for post (文章页目录是否使用简约样式)
 
 post_copyright: # 文章版权声明
@@ -457,7 +458,10 @@ footer:
   owner: # 网站拥有者信息
     enable: true # 是否显示
     since: 2025 # 网站起始年份
-  custom_text: 长安常安！ # 自定义页脚文本 (HTML)
+  custom_text:   # 自定义页脚文本 (HTML)
+         - 岁岁常欢愉，年年皆胜意.
+
+
   runtime: # 网站运行时间显示
     enable: true # 是否启用
     launch_time: 05/10/2025 00:00:00 # 网站上线时间 (格式: 月/日/年 时:分:秒)
@@ -554,11 +558,11 @@ footer:
     enable: true # 是否启用
     authorLink: / # 作者链接 (通常链接到首页或关于页)
     cc: # Creative Commons 许可协议信息
-      enable: true # 是否显示
+      enable: false # 是否显示
       link: /copyright # 协议详情页链接
-    linkList: 
-      - link: https://blog.142556.xyz
-        text: 博客
+    #linkList: 
+     # - link: https://blog.142556.xyz
+     #   text: 博客
      # - link: https://image.anheyu.com
      # - link: https://image.anheyu.com
      #   text: 图床
@@ -583,11 +587,39 @@ footer:
       source: 3
       # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
       sub:
-         - 生活明朗&#44; 万物可爱&#44; 人间值得&#44; 未来可期.
+         - 生活明朗, 万物可爱, 人间值得, 未来可期.
          - 天下非一人之天下，乃天下人之天下也.
          - 苍山负雪，明烛天南.
          - 愿你我：活成清欢，活成四季，淡若秋水，静无涟漪.
          - 安稳于日常，浅喜于光阴，阅己，悦己，乐己！
+         - 山海自有归期，风雨自有相逢.
+         - 无人扶我青云志，我自踏雪至山巅.
+         - 欲买桂花同载酒，终不似，少年游.
+         - 春有百花秋有月，夏有凉风冬有雪.
+         - 岁岁平，岁岁安，岁岁平安.
+         - 且以喜乐，且以永日.
+         # 新增的句子 (你可以选择性添加，并注意逗号格式)
+         - 海上生明月，天涯共此时. # 注意：原配置文件逗号是 , 如果用普通逗号 , 可能需要调整
+         - 但愿人长久，千里共婵娟.
+         - 落霞与孤鹜齐飞，秋水共长天一色.
+         - 采菊东篱下，悠然见南山。
+         - 此心安处是吾乡.
+         - 人生如逆旅, 我亦是行人.
+         - 星光不问赶路人, 时光不负有心人.
+         - 一花一世界, 一叶一菩提.
+         - 心有猛虎, 细嗅蔷薇.
+         - 陌上花开, 可缓缓归矣.
+         - 每一个不曾起舞的日子, 都是对生命的辜负.
+         - 追风赶月莫停留, 平芜尽处是春山.
+         - 愿你走出半生, 归来仍是少年.
+         - 万物皆有裂痕, 那是光照进来的地方.
+         - 保持热爱, 奔赴山海.
+         - 慢慢理解世界, 慢慢更新自己.
+         - 你所看到的惊艳, 都曾被平庸历练.
+         - 日子一般般, 快乐很简单.
+         - 所念皆星河, 所愿皆所得.
+         - 愿所有美好, 如期而至.
+
 
 
 # Analysis (网站分析统计)
@@ -816,11 +848,38 @@ hr_icon:
       source: 3
       # 如果关闭打字效果，subtitle 只会显示 sub 的第一行文字
       sub:
-         - 生活明朗&#44; 万物可爱&#44; 人间值得&#44; 未来可期.
+         - 生活明朗, 万物可爱, 人间值得, 未来可期.
          - 天下非一人之天下，乃天下人之天下也.
          - 苍山负雪，明烛天南.
          - 愿你我：活成清欢，活成四季，淡若秋水，静无涟漪.
          - 安稳于日常，浅喜于光阴，阅己，悦己，乐己！
+         - 山海自有归期，风雨自有相逢.
+         - 无人扶我青云志，我自踏雪至山巅.
+         - 欲买桂花同载酒，终不似，少年游.
+         - 春有百花秋有月，夏有凉风冬有雪.
+         - 岁岁平，岁岁安，岁岁平安.
+         - 且以喜乐，且以永日.
+         # 新增的句子 (你可以选择性添加，并注意逗号格式)
+         - 海上生明月，天涯共此时. # 注意：原配置文件逗号是 , 如果用普通逗号 , 可能需要调整
+         - 但愿人长久，千里共婵娟.
+         - 落霞与孤鹜齐飞，秋水共长天一色.
+         - 采菊东篱下，悠然见南山。
+         - 此心安处是吾乡.
+         - 人生如逆旅, 我亦是行人.
+         - 星光不问赶路人, 时光不负有心人.
+         - 一花一世界, 一叶一菩提.
+         - 心有猛虎, 细嗅蔷薇.
+         - 陌上花开, 可缓缓归矣.
+         - 每一个不曾起舞的日子, 都是对生命的辜负.
+         - 追风赶月莫停留, 平芜尽处是春山.
+         - 愿你走出半生, 归来仍是少年.
+         - 万物皆有裂痕, 那是光照进来的地方.
+         - 保持热爱, 奔赴山海.
+         - 慢慢理解世界, 慢慢更新自己.
+         - 你所看到的惊艳, 都曾被平庸历练.
+         - 日子一般般, 快乐很简单.
+         - 所念皆星河, 所愿皆所得.
+         - 愿所有美好, 如期而至.
 
 # Loading Animation (加载动画)
 preloader:
@@ -1096,21 +1155,21 @@ home_top:
   subTitle: 万物可爱。 # 副标题
   siteText: anheyu.com # 站点文字/域名显示
   category: # 分类快捷入口列表
-    - name: 宾客来 # 名称
+    - name: 一笑 # 名称
       path: https://blog.142556.xyz # 路径
       shadow: var(--anzhiyu-shadow-blue) # 阴影颜色 (CSS变量)
       class: blue # CSS 类名 (用于自定义样式)
       icon: anzhiyu-icon-dove # 图标类名
-    - name: 一笑
+    - name: 解千愁
       path: https://blog.142556.xyz
       shadow: var(--anzhiyu-shadow-red)
       class: red
       icon: anzhiyu-icon-fire
-    - name: 解千愁
-      path: https://blog.142556.xyz
-      shadow: var(--anzhiyu-shadow-green)
-      class: green
-      icon: anzhiyu-icon-book
+    #- name: 解千愁
+    #  path: https://blog.142556.xyz
+    #  shadow: var(--anzhiyu-shadow-green)
+    #  class: green
+    #  icon: anzhiyu-icon-book
   default_descr: 再怎么看我也不知道怎么描述它的啦！ # 文章无描述时的默认描述
   swiper: # 轮播图配置 (如果首页顶部使用轮播)
     enable: false # 是否启用轮播
