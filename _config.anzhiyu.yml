@@ -10,7 +10,7 @@ menu:
      留言板: /comments/ || anzhiyu-icon-envelope # 留言板
 
    我的: # 我的菜单组
-     音乐馆: /music/ || anzhiyu-icon-music # 音乐馆
+     音乐馆: /music/?id=13781300834&server=netease || anzhiyu-icon-music # 音乐馆
      追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
      相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
      小空调: /air-conditioner/ || anzhiyu-icon-fan # 小空调
@@ -20,11 +20,17 @@ menu:
     # 闲言碎语: /essay/ || anzhiyu-icon-lightbulb # 闲言碎语
      随便逛逛: javascript:toRandomPost() || anzhiyu-icon-shoe-prints1 # 随便逛逛 (执行JS函数)
    #  我的装备: /equipment/ || anzhiyu-icon-dice-d20
+
+   小工具: # 在线小工具菜单组
+     图片处理: /tools/image/ || anzhiyu-icon-image # 图片处理工具
+     文本工具: /tools/text/ || anzhiyu-icon-file-text # 文本处理工具
+     趣娱乐: /tools/fun/ || anzhiyu-icon-gamepad # 趣娱乐工具
+     小游戏: /tools/xyx/ 
    
 # nav相关配置 (顶部导航栏相关配置)
 nav:
   enable: false # 是否启用顶部导航栏
-  travelling: false # 是否启用“开往”按钮
+  travelling: false # 是否启用"开往"按钮
   clock: true # 是否启用时钟
   menu: # 导航栏菜单项
     - title: 网页 # 菜单组标题
@@ -190,7 +196,7 @@ post_meta: # 文章元数据设置
     date_format: simple # date (具体日期)/relative (相对日期)/simple (简单日期) 显示日期还是相对日期 或者 简单日期
     categories: true # true or false 主页是否显示分类
     tags: true # true or false 主页是否显示标籤
-    label: true # true or false 显示描述性文字 (如“置顶”)
+    label: true # true or false 显示描述性文字 (如"置顶")
   post: # 文章页的元数据
     date_type: both # created or updated or both 文章页日期是创建日或者更新日或都显示
     date_format: date # date/relative 显示日期还是相对日期
@@ -293,7 +299,7 @@ post_edit: # 目前仅可选择一个平台在线编辑
 
   # yuque: https://www.yuque.com/user-name/repo-name/ (语雀编辑链接格式)
   # 示例: https://www.yuque.com/yuque/yuque/
-  # 你需要在语雀文章 Front Matter 添加参数 id 并确保其唯一性（例如 “id: yuque”, “id: 01”）
+  # 你需要在语雀文章 Front Matter 添加参数 id 并确保其唯一性（例如 "id: yuque", "id: 01"）
   yuque: false # 语雀编辑链接
 
 # Related Articles (相关文章推荐)
@@ -307,8 +313,8 @@ photofigcaption: false # 是否为图片启用 figcaption (通常用于显示图
 
 # post_pagination (文章分页导航，即上一篇/下一篇)
 # value: 1 || 2 || 3 || 4 || false (可选值)
-# 1: The 'next post' will link to old post (“下一篇文章”将链接到较旧的文章)
-# 2: The 'next post' will link to new post (“下一篇文章”将链接到较新的文章)
+# 1: The 'next post' will link to old post ("下一篇文章"将链接到较旧的文章)
+# 2: The 'next post' will link to new post ("下一篇文章"将链接到较新的文章)
 # 3: 只有下一篇，并且只在文章滚动到评论区时显示下一篇文章(旧文章)
 # 4: 只有下一篇，并且只在文章滚动到评论区时显示下一篇文章(旧文章) 显示图片cover
 # false: disable pagination (禁用分页导航)
@@ -705,7 +711,7 @@ sidebar:
   menus_items: true # 是否显示主菜单项
   tags_cloud: true # 是否显示标签云
   display_mode: true # 是否显示亮色/暗色模式切换按钮
-  nav_menu_project: false # 是否显示顶部导航栏中配置的“项目”菜单 (nav.menu)
+  nav_menu_project: false # 是否显示顶部导航栏中配置的"项目"菜单 (nav.menu)
 
 # 文章h2添加分隔线
 h2Divider: true # 是否在文章的 H2 标题下自动添加分隔线
@@ -777,9 +783,9 @@ activate_power_mode:
 
 # Mouse click effects: fireworks (鼠标点击效果: 烟火特效)
 fireworks:
-  enable: false # 是否启用鼠标点击烟火特效
+  enable: true # 是否启用鼠标点击烟火特效
   zIndex: 9999 # -1 or 9999 (烟火特效的 z-index 层级)
-  mobile: false # 移动端是否启用
+  mobile: true # 移动端是否启用
 
 # Mouse click effects: Heart symbol (鼠标点击效果: 爱心)
 click_heart:
@@ -788,7 +794,7 @@ click_heart:
 
 # Mouse click effects: words (鼠标点击效果: 文字 )
 ClickShowText:
-  enable: true # 是否启用鼠标点击文字特效
+  enable: false # 是否启用鼠标点击文字特效
   text: # 文字列表 (随机显示)
      - I
      - LOVE
@@ -975,7 +981,7 @@ newest_comments:
 translate:
   enable: true # 是否启用简繁转换按钮
   # The text of a button (按钮文字)
-  default: 繁 # 默认按钮文字 (通常在简体环境下显示“繁”)
+  default: 繁 # 默认按钮文字 (通常在简体环境下显示"繁")
   # Right-click menu default text (右键菜单默认文本，如果支持)
   rightMenuMsgDefault: "轉為繁體" # 右键菜单默认显示的转换提示
   # the language of website (1 - Traditional Chinese/ 2 - Simplified Chinese） (网站默认语言：1繁体/2简体)
@@ -983,9 +989,9 @@ translate:
   # Time delay (转换延迟时间，毫秒)
   translateDelay: 0 # 转换操作的延迟时间
   # The text of the button when the language is Simplified Chinese (简体中文环境下按钮显示的文字)
-  msgToTraditionalChinese: "繁" # 简体环境下，按钮显示为“繁”
+  msgToTraditionalChinese: "繁" # 简体环境下，按钮显示为"繁"
   # The text of the button when the language is Traditional Chinese (繁体中文环境下按钮显示的文字)
-  msgToSimplifiedChinese: "简" # 繁体环境下，按钮显示为“简”
+  msgToSimplifiedChinese: "简" # 繁体环境下，按钮显示为"简"
   # Right-click the menu to traditional Chinese (右键菜单转为繁体中文的提示)
   rightMenuMsgToTraditionalChinese: "转为繁体"
   # Right-click menu to simplified Chinese (右键菜单转为简体中文的提示)
@@ -1152,8 +1158,8 @@ home_top:
   enable: true # 开关 (是否启用首页顶部特殊区域)
   timemode: date #date/updated (时间模式：创建日期/更新日期)
   title: 生活明朗 # 主标题
-  subTitle: 万物可爱。 # 副标题
-  siteText: anheyu.com # 站点文字/域名显示
+  subTitle: 万物可爱 # 副标题
+  siteText: # 站点文字/域名显示
   category: # 分类快捷入口列表
     - name: 一笑 # 名称
       path: https://blog.142556.xyz # 路径
@@ -1230,10 +1236,10 @@ comment_barrage_config:
 nav_music:
   enable: true # 是否启用左下角音乐播放器
   console_widescreen_music: true # 宽屏状态控制台显示音乐而不是标签 enable为true 控制台依然会显示 (宽屏时是否在控制台区域显示音乐播放器而非标签云)
-  id: 8152976493 # 歌单 ID (网易云音乐、QQ音乐等)
+  id: 13781300834 # 歌单 ID (网易云音乐、QQ音乐等)
   server: netease # 音乐平台 (netease, tencent, kugou, xiami, baidu)
   volume: 0.7 # 默认音量 (0 到 1)
-  all_playlist: https://y.qq.com/n/ryqq/playlist/8802438608 # 音乐页面的“全部歌单”链接
+  all_playlist:  # 音乐页面的"全部歌单"链接
 
 # 路径为 /music 的音乐页面默认加载的歌单 1. nav_music 2. custom
 music_page_default: nav_music # 音乐页面 (/music) 默认加载的歌单来源: nav_music (左下角播放器歌单) 或 custom (自定义)
@@ -1324,10 +1330,13 @@ rightClickMenu:
   enable: true # 是否启用自定义右键菜单
 
 # 首页随便逛逛people模式 而非技能点模式，关闭后为技能点模式需要配置creativity.yml
-# (首页“随便逛逛”区域的显示模式：人物形象 / 技能点。后者需要配置 creativity.yml)
+# (首页"随便逛逛"区域的显示模式：人物形象 / 技能点。后者需要配置 creativity.yml)
 peoplecanvas:
   enable: true # 是否启用人物形象模式
-  img: /img/svg/竖条文字左上角.svg # 人物图片链接
+  img: /img/svg/竖条文字左上角.svg   # 人物图片链接
+
+
+
 
 # 动效 (各种动态效果开关)
 dynamicEffect:

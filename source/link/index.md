@@ -1,5 +1,5 @@
 ---
-title: link
+title: 友链
 top_img: 
 date: 2025-05-25 15:19:21
 type: "link"

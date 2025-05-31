@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片处理工具 - 在线小工具</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        #image-tools-page-wrapper {
+            --primary-color-1: #667eea;
+            --primary-color-2: #764ba2;
+            --primary-color-3: #f093fb;
+            --secondary-color-1: #4facfe;
+            --secondary-color-2: #00f2fe;
+            --accent-color-1: #fa709a;
+            --accent-color-2: #fee140;
+
+            --glass-bg: rgba(255, 255, 255, 0.08); /* Slightly more transparent */
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-primary-on-dark: #ffffff;
+            --text-secondary-on-dark: rgba(255, 255, 255, 0.85);
+            --shadow-light: 0 8px 32px rgba(20, 20, 80, 0.15); /* Adjusted shadow color for better blend */
+            --shadow-medium: 0 15px 40px rgba(20, 20, 80, 0.2);
+            --shadow-heavy: 0 25px 60px rgba(20, 20, 80, 0.3);
+
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            
+            /* Animated Gradient Background */
+            background: linear-gradient(135deg, 
+                var(--primary-color-1), 
+                var(--primary-color-2), 
+                var(--primary-color-3), 
+                var(--secondary-color-1), 
+                var(--secondary-color-2),
+                var(--primary-color-1) /* Loop back to start for smoother animation */
+            );
+            background-size: 400% 400%; /* Make background larger than viewport */
+            animation: animatedGradient 25s ease infinite; /* Apply animation */
+
+            min-height: 100vh; 
+            padding: 20px;
+            position: relative; 
+            overflow-x: hidden;
+            color: var(--text-primary-on-dark); 
+        }
+
+        @keyframes animatedGradient { /* Keyframes for the background animation */
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #image-tools-page-wrapper *,
+        #image-tools-page-wrapper *::before,
+        #image-tools-page-wrapper *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #image-tools-page-wrapper::before { /* Subtle overlay pattern or texture (optional) */
+            content: '';
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(220, 220, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, rgba(255, 200, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1; 
+        }
+
+        #image-tools-page-wrapper .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2; 
+        }
+
+        #image-tools-page-wrapper .floating-elements {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0; 
+        }
+
+        #image-tools-page-wrapper .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06); /* Even more subtle */
+            opacity: 0.6;
+            animation: float 8s ease-in-out infinite alternate; /* Single animation for all */
+        }
+
+        #image-tools-page-wrapper .floating-circle:nth-child(1) {
+            width: 70px; height: 70px; top: 12%; left: 8%; animation-duration: 7.5s; animation-delay: -1s;
+        }
+        #image-tools-page-wrapper .floating-circle:nth-child(2) {
+            width: 110px; height: 110px; top: 22%; right: 12%; animation-duration: 9s; animation-delay: -2.5s;
+        }
+        #image-tools-page-wrapper .floating-circle:nth-child(3) {
+            width: 55px; height: 55px; bottom: 18%; left: 18%; animation-duration: 6.5s; animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg) scale(0.9); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(200deg) scale(1.05); opacity: 0.7; }
+            100% { transform: translateY(0px) rotate(380deg) scale(0.9); opacity: 0.3; } /* Slight overshoot on rotate for fluidity */
+        }
+
+        #image-tools-page-wrapper .breadcrumb {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px); 
+            border: 1px solid var(--glass-border);
+            border-radius: 16px; /* Slightly more rounded */
+            padding: 14px 22px; /* Adjusted padding */
+            margin-bottom: 45px; /* Adjusted margin */
+            box-shadow: var(--shadow-light);
+            animation: slideInDown 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother ease */
+            position: relative;
+            z-index: 3; 
+        }
+
+        #image-tools-page-wrapper .breadcrumb a {
+            color: var(--text-primary-on-dark);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 500;
+            display: inline-block; 
+            position: relative;
+        }
+        #image-tools-page-wrapper .breadcrumb a::after { /* Underline effect */
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--secondary-color-2);
+            transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        #image-tools-page-wrapper .breadcrumb a:hover {
+            opacity: 1;
+            text-shadow: 0 0 15px rgba(220, 220, 255, 0.8);
+            transform: translateY(-3px);
+        }
+        #image-tools-page-wrapper .breadcrumb a:hover::after {
+            width: 100%;
+        }
+        #image-tools-page-wrapper .breadcrumb span {
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.75));
+            margin: 0 10px; /* Adjusted margin */
+        }
+
+        #image-tools-page-wrapper .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--text-primary-on-dark);
+            animation: fadeInUp 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+        }
+        #image-tools-page-wrapper .header-icon {
+            font-size: 4.2rem; /* Slightly larger */
+            margin-bottom: 22px;
+            display: inline-block;
+            animation: bounceHeaderIcon 3s ease-in-out infinite; 
+            text-shadow: 0 0 20px rgba(255,255,255,0.5); /* Add a glow to icon */
+        }
+        #image-tools-page-wrapper .header h1 {
+            font-size: 3.6rem; /* Slightly larger */
+            font-weight: 700;
+            margin-bottom: 18px;
+            text-shadow: 0 5px 25px rgba(0,0,0,0.35);
+            background: linear-gradient(45deg, #ffffff, #e8efff, #ffffff);
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmerHeading 3.5s ease-in-out infinite; /* Renamed animation */
+        }
+        #image-tools-page-wrapper .header p {
+            font-size: 1.25rem; /* Slightly larger */
+            opacity: 0.9;
+            font-weight: 400;
+            max-width: 620px; /* Slightly wider */
+            margin: 0 auto;
+            line-height: 1.65;
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.9));
+        }
+
+        @keyframes shimmerHeading {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes bounceHeaderIcon { 
+            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+            20% { transform: translateY(-5px) scale(1.02) rotate(-3deg); }
+            40% { transform: translateY(-15px) scale(1.08) rotate(3deg); }
+            60% { transform: translateY(-5px) scale(1.02) rotate(-3deg); }
+            80% { transform: translateY(0px) scale(1) rotate(0deg); }
+        }
+
+        #image-tools-page-wrapper .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); 
+            gap: 35px; /* Increased gap */
+            margin-top: 50px;
+            margin-bottom: 55px; /* Added margin for spacing before stats-grid */
+        }
+
+        #image-tools-page-wrapper .tool-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px); 
+            border: 1px solid var(--glass-border);
+            border-radius: 22px; /* More rounded */
+            padding: 30px; 
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        border-color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            color: var(--text-primary-on-dark); 
+            display: flex; /* Added for flex layout */
+            flex-direction: column; /* Added for flex layout */
+        }
+        /* Staggered animation delays */
+        #image-tools-page-wrapper .tool-card:nth-child(1) { animation-delay: 0.15s; }
+        #image-tools-page-wrapper .tool-card:nth-child(2) { animation-delay: 0.25s; }
+        #image-tools-page-wrapper .tool-card:nth-child(3) { animation-delay: 0.35s; }
+        #image-tools-page-wrapper .tool-card:nth-child(4) { animation-delay: 0.45s; }
+        #image-tools-page-wrapper .tool-card:nth-child(5) { animation-delay: 0.55s; }
+        #image-tools-page-wrapper .tool-card:nth-child(6) { animation-delay: 0.65s; }
+        #image-tools-page-wrapper .tool-card:nth-child(7) { animation-delay: 0.75s; }
+        #image-tools-page-wrapper .tool-card:nth-child(8) { animation-delay: 0.85s; }
+
+
+        #image-tools-page-wrapper .tool-card::before { 
+            content: '';
+            position: absolute;
+            top: 0; left: -150%; 
+            width: 100%; height: 100%; 
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,0.12), transparent);
+            transform: skewX(-30deg); 
+            transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #image-tools-page-wrapper .tool-card::after { 
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px; /* Thicker glow border */
+            background: linear-gradient(135deg, var(--secondary-color-1), var(--secondary-color-2));
+            border-radius: 25px; 
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.45s ease-out;
+        }
+        #image-tools-page-wrapper .tool-card:hover {
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        #image-tools-page-wrapper .tool-card:hover::before { left: 150%; }
+        #image-tools-page-wrapper .tool-card:hover::after { opacity: 0.9; }
+        
+        #image-tools-page-wrapper .tool-card:hover .tool-icon { 
+            transform: scale(1.2) rotateY(25deg) rotateX(15deg) translateZ(10px); /* More pronounced 3D effect */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+        #image-tools-page-wrapper .tool-card:hover .tool-title {
+            color: var(--secondary-color-2); /* Change title color on hover */
+            text-shadow: 0 0 8px var(--secondary-color-2);
+        }
+
+        #image-tools-page-wrapper .tool-icon {
+            width: 70px; height: 70px; 
+            background: linear-gradient(135deg, var(--secondary-color-1) 0%, var(--secondary-color-2) 100%);
+            border-radius: 18px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px auto; 
+            font-size: 28px; 
+            color: white; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: visible; /* Allow icon to pop a bit */
+        }
+        #image-tools-page-wrapper .tool-icon::before { 
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: inherit; 
+            transform: scale(1.1); /* Slightly larger glow */
+            z-index: -1;
+        }
+        #image-tools-page-wrapper .tool-card:hover .tool-icon::before { opacity: 0.7; }
+        #image-tools-page-wrapper .tool-icon span { 
+            position: relative; z-index: 1;
+            transition: transform 0.3s ease;
+        }
+         #image-tools-page-wrapper .tool-card:hover .tool-icon span {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+
+        #image-tools-page-wrapper .tool-title {
+            font-size: 1.45rem; 
+            font-weight: 600;
+            color: var(--text-primary-on-dark); 
+            margin-bottom: 10px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            text-align: center; 
+        }
+        #image-tools-page-wrapper .tool-desc {
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.8));
+            line-height: 1.6; 
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-size: 0.88rem; 
+            text-align: center; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            flex-grow: 1; /* Added for flex layout */
+        }
+        #image-tools-page-wrapper .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center; 
+        }
+        #image-tools-page-wrapper .feature-tag {
+            background: rgba(255, 255, 255, 0.08); 
+            color: var(--text-primary-on-dark);
+            padding: 6px 12px; 
+            border-radius: 14px; /* More rounded */
+            font-size: 0.72rem; 
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0; /* For staggered animation */
+            transform: translateY(10px); /* For staggered animation */
+        }
+        #image-tools-page-wrapper .tool-card:hover .feature-tag { /* Staggered animation for tags */
+            opacity: 1;
+            transform: translateY(0px);
+        }
+        #image-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(1) { transition-delay: 0.05s; }
+        #image-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(2) { transition-delay: 0.1s; }
+        #image-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(3) { transition-delay: 0.15s; }
+        #image-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(4) { transition-delay: 0.2s; } /* If more tags */
+
+
+        #image-tools-page-wrapper .feature-tag:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        #image-tools-page-wrapper .tool-badge {
+            display: inline-flex; 
+            align-items: center;
+            gap: 7px; /* Increased gap */
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+            color: white; 
+            padding: 9px 18px; /* Increased padding */
+            border-radius: 30px; /* More rounded */
+            font-size: 0.82rem; 
+            font-weight: 600;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.25);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto; 
+        }
+         #image-tools-page-wrapper .tool-card .tool-badge-container { 
+            text-align: center;
+            margin-top: auto; 
+        }
+
+        #image-tools-page-wrapper .tool-card:hover .tool-badge {
+            transform: translateY(-3px) scale(1.08); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+        }
+        #image-tools-page-wrapper .tool-badge span:first-child { 
+             display: inline-block;
+             transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #image-tools-page-wrapper .tool-card:hover .tool-badge span:first-child {
+            transform: scale(1.3) rotate(15deg);
+        }
+
+
+        #image-tools-page-wrapper .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 25px; /* Increased gap */
+            margin: 0 0 55px 0; /* Adjusted: top margin removed, bottom margin kept */
+        }
+        #image-tools-page-wrapper .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px 25px; /* Adjusted padding */
+            text-align: center;
+            color: var(--text-primary-on-dark);
+            animation: fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; 
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        #image-tools-page-wrapper .stat-card:hover {
+            transform: scale(1.08) translateY(-8px); /* Enhanced hover */
+            box-shadow: var(--shadow-medium);
+        }
+
+        #image-tools-page-wrapper .stat-number {
+            font-size: 2.6rem; /* Slightly larger */
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary-color-1), var(--secondary-color-2), var(--accent-color-2));
+            background-size: 150% 150%; /* For potential animation or richer static look */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px; 
+            transition: color 0.3s ease; /* For hover effect */
+        }
+         #image-tools-page-wrapper .stat-card:hover .stat-number {
+            /* -webkit-text-fill-color: var(--accent-color-1); /* Example: Change color on hover */
+            /* Or animate background position for a shimmer */
+            animation: shimmerStatNumber 0.5s ease-out;
+        }
+        @keyframes shimmerStatNumber {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+
+        #image-tools-page-wrapper .stat-label {
+            opacity: 0.9;
+            margin-top: 8px;
+            font-size: 0.92rem; /* Slightly larger */
+            color: var(--text-secondary-on-dark, rgba(255,255,255,0.85));
+        }
+
+        /* Animation Keyframes */
+        @keyframes slideInDown { 
+            from { opacity: 0; transform: translateY(-35px); } /* Slightly more distance */
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInUp { 
+            from { opacity: 0; transform: translateY(55px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #image-tools-page-wrapper .header h1 { font-size: 2.6rem; }
+            #image-tools-page-wrapper .header-icon { font-size: 3.8rem; }
+            #image-tools-page-wrapper .tools-grid { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 28px; }
+            #image-tools-page-wrapper .tool-card { padding: 28px 25px; }
+            #image-tools-page-wrapper .stats-grid { grid-template-columns: 1fr; gap: 18px; }
+        }
+        @media (max-width: 480px) {
+            #image-tools-page-wrapper { padding: 12px; } 
+            #image-tools-page-wrapper .header h1 { font-size: 2rem; }
+            #image-tools-page-wrapper .header p { font-size: 0.95rem; }
+            #image-tools-page-wrapper .breadcrumb { padding: 10px 14px; font-size: 0.85rem;}
+            #image-tools-page-wrapper .tool-title { font-size: 1.15rem; }
+            #image-tools-page-wrapper .tool-desc { font-size: 0.8rem; }
+            #image-tools-page-wrapper .tool-icon { width: 60px; height: 60px; font-size: 24px;}
+            #image-tools-page-wrapper .stat-number { font-size: 1.8rem;}
+            #image-tools-page-wrapper .stat-label { font-size: 0.75rem;}
+            #image-tools-page-wrapper .tool-badge { padding: 7px 14px; font-size: 0.75rem;}
+            #image-tools-page-wrapper .feature-tag { padding: 5px 10px; font-size: 0.68rem;}
+
+        }
+        
+        #image-tools-page-wrapper .tool-card:focus-visible { 
+            outline: none;
+            box-shadow: 0 0 0 3px var(--secondary-color-1), var(--shadow-heavy); /* More prominent focus */
+        }
+
+    </style>
+</head>
+<body>
+    <div id="image-tools-page-wrapper">
+        <div class="floating-elements">
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+        </div>
+
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">🏠 首页</a>
+                <span>›</span>
+                <a href="/tools/">🛠️ 在线小工具</a>
+                <span>›</span>
+                <span>🎨 图片处理工具</span>
+            </div>
+
+            <div class="header">
+                <div class="header-icon">🌌</div> <h1>图片处理工具集</h1>
+                <p>在线图片处理工具集合，让图片处理变得简单高效。支持压缩、转换、裁剪、拼接等多种功能，无需安装任何软件。</p>
+            </div>
+
+            <!-- Tools Grid now comes before Stats Grid -->
+            <div class="tools-grid">
+                <div class="tool-card" onclick="window.open('/tools/image/compress/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🗜️</span></div>
+                    <div class="tool-title">专业图片压缩器</div>
+                    <div class="tool-desc">高效优化图片，提升网站加载速度，支持批量处理和多种压缩级别选择。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">批量处理</span>
+                        <span class="feature-tag">多级压缩</span>
+                        <span class="feature-tag">质量优先</span>
+                        <span class="feature-tag">JPG/PNG/WebP</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>⚡</span> 优化工具</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/convert/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🔄</span></div>
+                    <div class="tool-title">图片格式转换</div>
+                    <div class="tool-desc">支持 JPG, PNG, WebP, GIF 等主流图片格式互转，操作简便。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">JPG</span>
+                        <span class="feature-tag">PNG</span>
+                        <span class="feature-tag">WebP</span>
+                        <span class="feature-tag">GIF</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🔁</span> 格式转换</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/crop/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>✂️</span></div>
+                    <div class="tool-title">高级图片裁剪</div>
+                    <div class="tool-desc">自由裁剪、调整尺寸，支持比例锁定和多种预设比例，精准控制。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">比例锁定</span>
+                        <span class="feature-tag">自定义尺寸</span>
+                        <span class="feature-tag">实时预览</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>✨</span> 编辑工具</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/merge/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🧩</span></div>
+                    <div class="tool-title">图片拼接与切分</div>
+                    <div class="tool-desc">多种拼接方式，支持图片切分成九宫格等，灵活调整间距和背景。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">水平/垂直拼接</span>
+                        <span class="feature-tag">网格拼接</span>
+                        <span class="feature-tag">九宫格切分</span>
+                        <span class="feature-tag">自定义布局</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🎯</span> 布局工具</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/qrcode/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>📱</span></div>
+                    <div class="tool-title">二维码生成器</div>
+                    <div class="tool-desc">将文字或链接快速转换为二维码，即时生成并支持下载。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">文本转QR</span>
+                        <span class="feature-tag">链接转QR</span>
+                        <span class="feature-tag">PNG下载</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🚀</span> 生成工具</div></div>
+                </div>
+                
+                <div class="tool-card" onclick="window.open('/tools/image/bg-remover/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🪄</span></div>
+                    <div class="tool-title">一键抠图去背景</div>
+                    <div class="tool-desc">AI自动去除图片背景，快速获取透明PNG图片，操作简便，保护隐私。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">AI抠图</span>
+                        <span class="feature-tag">背景移除</span>
+                        <span class="feature-tag">PNG输出</span>
+                        <span class="feature-tag">浏览器处理</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🌟</span> AI工具</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/avatar/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>👤</span></div>
+                    <div class="tool-title">随机卡通头像</div>
+                    <div class="tool-desc">一键生成独特的卡通头像，提供多种组件和颜色组合，趣味十足。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">随机组合</span>
+                        <span class="feature-tag">多种组件</span>
+                        <span class="feature-tag">高清下载</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🎨</span> 创意工具</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/image/colorpicker/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>💧</span></div> 
+                    <div class="tool-title">图片颜色提取器</div>
+                    <div class="tool-desc">从图片中拾取颜色，获取HEX和RGB值，方便设计师和开发者。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">点击取色</span>
+                        <span class="feature-tag">HEX/RGB值</span>
+                        <span class="feature-tag">颜色预览</span>
+                        <span class="feature-tag">复制颜色</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🔍</span> 设计辅助</div></div>
+                </div>
+            </div>
+
+            <!-- Stats Grid is now here, after Tools Grid -->
+            <div class="stats-grid">
+                 <div class="stat-card">
+                    <div class="stat-number">8</div>
+                    <div class="stat-label">款实用工具</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">浏览器端处理</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">无限次</div>
+                    <div class="stat-label">免费使用</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">极速</div>
+                    <div class="stat-label">处理响应</div>
+                </div>
+            </div>
+
+        </div> <!-- End of .container -->
+    </div> <!-- End of #image-tools-page-wrapper -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('image-tools-page-wrapper');
+            if (!wrapper) return;
+
+            wrapper.querySelectorAll('.tool-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('a')) return; 
+
+                    // Check if the click target is the card itself or its direct children,
+                    // but not elements inside a nested clickable structure (if any).
+                    // For this layout, any click on the card should trigger the navigation.
+                    
+                    // The onclick attribute on the card handles the navigation.
+                    // This JS part is now primarily for the ripple and 3D hover effects.
+
+                    const ripple = document.createElement('div');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height) * 1.8; 
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px; height: ${size}px;
+                        left: ${x}px; top: ${y}px;
+                        background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.03) 60%, transparent 80%);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: rippleEffectPageTools 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+                        pointer-events: none;
+                        z-index: 5; 
+                    `;
+                    this.appendChild(ripple);
+                    setTimeout(() => { ripple.remove(); }, 700);
+                });
+
+                let isMouseOverCard = false;
+                const perspectiveValue = 1800; // Consistent perspective
+                card.addEventListener('mouseenter', function(e) {
+                    isMouseOverCard = true;
+                    this.style.transition = 'transform 0.07s linear, box-shadow 0.3s ease, border-color 0.3s ease'; 
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 22; 
+                    const rotateY = (centerX - x) / 22; 
+                    this.style.transform = `translateY(-12px) scale(1.05) perspective(${perspectiveValue}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mousemove', function(e) {
+                    if (!isMouseOverCard) return;
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 22; 
+                    const rotateY = (centerX - x) / 22; 
+                    this.style.transform = `translateY(-12px) scale(1.05) perspective(${perspectiveValue}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    isMouseOverCard = false;
+                    this.style.transition = 'transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.45s ease';
+                    this.style.transform = `translateY(0px) scale(1) perspective(${perspectiveValue}px) rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+
+            if (!document.getElementById('ripple-animation-style-page-tools')) { // Unique ID for style
+                const style = document.createElement('style');
+                style.id = 'ripple-animation-style-page-tools';
+                style.textContent = `
+                    @keyframes rippleEffectPageTools { /* Unique animation name */
+                        to {
+                            transform: scale(1.3); 
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            const observerOptions = {
+                root: null, 
+                threshold: 0.1, // Adjusted for earlier trigger
+                rootMargin: '0px 0px -30px 0px' 
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        // The CSS animation's `fill-mode: both` should handle the transform.
+                        // If direct transform is needed post-animation, it can be set here.
+                        entry.target.classList.add('is-visible'); 
+                        // obs.unobserve(entry.target); // Optional: unobserve after first animation
+                    }
+                });
+            }, observerOptions);
+
+            wrapper.querySelectorAll('.tool-card, .stat-card, .breadcrumb, .header').forEach(el => {
+                el.style.opacity = '0'; 
+                observer.observe(el);
+            });
+
+            wrapper.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = wrapper.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

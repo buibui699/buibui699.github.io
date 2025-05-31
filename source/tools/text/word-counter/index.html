@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>专业字数统计器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #212529;
+            --border-color: #dee2e6;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
+        .dark-theme {
+            --primary-color: #4895ef;
+            --secondary-color: #3a0ca3;
+            --background-color: #121212;
+            --card-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --border-color: #333333;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            transition: var(--transition);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .theme-toggle {
+            background: var(--card-color);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 8px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+        }
+
+        .theme-toggle i {
+            font-size: 1.2rem;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 900px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .text-input-section, .stats-section {
+            background: var(--card-color);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .text-input-section:hover, .stats-section:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+        }
+
+        .section-title i {
+            font-size: 1.6rem;
+        }
+
+        .textarea-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 300px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--card-color);
+            color: var(--text-color);
+            font-size: 1.1rem;
+            resize: none;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        .text-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--card-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn i {
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--primary-color);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .stats-visualization {
+            height: 200px;
+            background: var(--card-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            gap: 15px;
+            border: 1px solid var(--border-color);
+            margin-top: 20px;
+        }
+
+        .bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--primary-color), var(--secondary-color));
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            transition: height 0.8s ease;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .additional-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .additional-stat {
+            background: var(--card-color);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .additional-stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 5px 0;
+            color: var(--warning-color);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            .stats-grid, .additional-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-calculator"></i>
+                <h1>专业字数统计器</h1>
+            </div>
+            <div class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+                <span>暗色模式</span>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="text-input-section">
+                <h2 class="section-title"><i class="fas fa-edit"></i> 文本输入</h2>
+                <div class="textarea-container">
+                    <textarea id="textInput" placeholder="在此输入或粘贴您要统计的文本..."></textarea>
+                </div>
+                <div class="text-controls">
+                    <button class="btn btn-primary" id="clearBtn">
+                        <i class="fas fa-eraser"></i> 清除文本
+                    </button>
+                    <button class="btn btn-secondary" id="sampleBtn">
+                        <i class="fas fa-file-alt"></i> 示例文本
+                    </button>
+                    <button class="btn btn-secondary" id="pasteBtn">
+                        <i class="fas fa-paste"></i> 粘贴文本
+                    </button>
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h2 class="section-title"><i class="fas fa-chart-bar"></i> 统计结果</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">总字数</div>
+                        <div class="stat-value" id="wordCount">0</div>
+                        <div class="stat-label">(中英文单词)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">总字符数</div>
+                        <div class="stat-value" id="charCount">0</div>
+                        <div class="stat-label">(含空格)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">字符数(不含空格)</div>
+                        <div class="stat-value" id="charNoSpaceCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">段落数</div>
+                        <div class="stat-value" id="paragraphCount">0</div>
+                    </div>
+                </div>
+
+                <div class="stats-visualization" id="visualization">
+                    <div class="bar" id="wordBar" style="height: 10%;">
+                        <div class="bar-label">字数</div>
+                    </div>
+                    <div class="bar" id="charBar" style="height: 10%;">
+                        <div class="bar-label">字符</div>
+                    </div>
+                    <div class="bar" id="charNoSpaceBar" style="height: 10%;">
+                        <div class="bar-label">字符(无空格)</div>
+                    </div>
+                    <div class="bar" id="paragraphBar" style="height: 10%;">
+                        <div class="bar-label">段落</div>
+                    </div>
+                </div>
+
+                <div class="additional-stats">
+                    <div class="additional-stat">
+                        <div class="stat-label">行数</div>
+                        <div class="additional-stat-value" id="lineCount">0</div>
+                    </div>
+                    <div class="additional-stat">
+                        <div class="stat-label">中文汉字</div>
+                        <div class="additional-stat-value" id="chineseCharCount">0</div>
+                    </div>
+                    <div class="additional-stat">
+                        <div class="stat-label">英文单词</div>
+                        <div class="additional-stat-value" id="englishWordCount">0</div>
+                    </div>
+                    <div class="additional-stat">
+                        <div class="stat-label">数字</div>
+                        <div class="additional-stat-value" id="numberCount">0</div>
+                    </div>
+                    <div class="additional-stat">
+                        <div class="stat-label">空格数</div>
+                        <div class="additional-stat-value" id="spaceCount">0</div>
+                    </div>
+                    <div class="additional-stat">
+                        <div class="stat-label">阅读时间</div>
+                        <div class="additional-stat-value" id="readingTime">0s</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>专业字数统计器 &copy; 2023 - 实时分析您的文本数据</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('textInput');
+            const wordCount = document.getElementById('wordCount');
+            const charCount = document.getElementById('charCount');
+            const charNoSpaceCount = document.getElementById('charNoSpaceCount');
+            const paragraphCount = document.getElementById('paragraphCount');
+            const lineCount = document.getElementById('lineCount');
+            const chineseCharCount = document.getElementById('chineseCharCount');
+            const englishWordCount = document.getElementById('englishWordCount');
+            const numberCount = document.getElementById('numberCount');
+            const spaceCount = document.getElementById('spaceCount');
+            const readingTime = document.getElementById('readingTime');
+            const clearBtn = document.getElementById('clearBtn');
+            const sampleBtn = document.getElementById('sampleBtn');
+            const pasteBtn = document.getElementById('pasteBtn');
+            const themeToggle = document.getElementById('themeToggle');
+            const wordBar = document.getElementById('wordBar');
+            const charBar = document.getElementById('charBar');
+            const charNoSpaceBar = document.getElementById('charNoSpaceBar');
+            const paragraphBar = document.getElementById('paragraphBar');
+            
+            // 主题切换
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const icon = themeToggle.querySelector('i');
+                const text = themeToggle.querySelector('span');
+                
+                if (document.body.classList.contains('dark-theme')) {
+                    icon.className = 'fas fa-sun';
+                    text.textContent = '亮色模式';
+                } else {
+                    icon.className = 'fas fa-moon';
+                    text.textContent = '暗色模式';
+                }
+            });
+            
+            // 文本统计函数
+            function countTextStats() {
+                const text = textInput.value;
+                
+                // 总字符数（含空格）
+                const totalChars = text.length;
+                charCount.textContent = totalChars;
+                
+                // 总字符数（不含空格）
+                const charsWithoutSpaces = text.replace(/\s/g, '').length;
+                charNoSpaceCount.textContent = charsWithoutSpaces;
+                
+                // 计算中文字数（汉字）
+                const chineseChars = (text.match(/[\u4E00-\u9FA5]/g) || []).length;
+                chineseCharCount.textContent = chineseChars;
+                
+                // 计算英文单词数
+                const englishWords = text.match(/\b[a-zA-Z]+\b/g) || [];
+                englishWordCount.textContent = englishWords.length;
+                
+                // 计算数字数量
+                const numbers = (text.match(/\d+/g) || []).length;
+                numberCount.textContent = numbers;
+                
+                // 计算空格数
+                const spaces = (text.match(/\s/g) || []).length;
+                spaceCount.textContent = spaces;
+                
+                // 总字数（中文汉字 + 英文单词）
+                const totalWords = chineseChars + englishWords.length;
+                wordCount.textContent = totalWords;
+                
+                // 计算段落数（按空行分割）
+                const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+                paragraphCount.textContent = paragraphs.length;
+                
+                // 计算行数
+                const lines = text.split('\n').filter(line => line.trim().length > 0);
+                lineCount.textContent = lines.length;
+                
+                // 计算阅读时间（按每分钟200字计算）
+                const minutes = Math.ceil(totalWords / 200);
+                readingTime.textContent = minutes > 0 ? `${minutes}分钟` : '小于1分钟';
+                
+                // 更新图表
+                updateVisualization(totalWords, totalChars, charsWithoutSpaces, paragraphs.length);
+            }
+            
+            // 更新数据可视化
+            function updateVisualization(words, chars, charsNoSpace, paragraphs) {
+                // 计算最大比例
+                const maxVal = Math.max(words, chars, charsNoSpace, paragraphs, 1);
+                
+                // 设置柱状图高度
+                wordBar.style.height = `${Math.min(100, (words / maxVal) * 90)}%`;
+                charBar.style.height = `${Math.min(100, (chars / maxVal) * 90)}%`;
+                charNoSpaceBar.style.height = `${Math.min(100, (charsNoSpace / maxVal) * 90)}%`;
+                paragraphBar.style.height = `${Math.min(100, (paragraphs / maxVal) * 90)}%`;
+            }
+            
+            // 事件监听
+            textInput.addEventListener('input', countTextStats);
+            
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+                countTextStats();
+                textInput.focus();
+            });
+            
+            sampleBtn.addEventListener('click', () => {
+                textInput.value = `字数统计器是一款实用的工具，可以帮助您快速分析文本内容。本工具支持中英文混合统计，提供多种统计维度。
+                
+功能特点：
+1. 实时统计 - 输入时立即更新结果
+2. 多维度分析 - 字数、字符数、段落数等
+3. 数据可视化 - 直观图表展示
+4. 主题切换 - 支持亮色/暗色模式
+5. 响应式设计 - 适配各种设备
+
+使用场景：
+- 写作时控制文章长度
+- 社交媒体内容优化
+- 学术论文格式检查
+- 翻译字数统计
+- 代码注释分析
+
+统计规则：
+- 中文字符：每个汉字计为一个字
+- 英文单词：按空格分隔的单词计数
+- 字符数：包含所有字符（含空格）
+- 段落：由空行分隔的文本块
+
+技术支持：HTML5, CSS3, JavaScript`;
+                countTextStats();
+                textInput.focus();
+            });
+            
+            pasteBtn.addEventListener('click', async () => {
+                try {
+                    const clipboardText = await navigator.clipboard.readText();
+                    textInput.value = clipboardText;
+                    countTextStats();
+                    textInput.focus();
+                } catch (err) {
+                    alert('无法访问剪贴板，请手动粘贴文本');
+                }
+            });
+            
+            // 初始化
+            countTextStats();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>二维码生成器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #4a00e0;
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-weight: 600;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            opacity: 0.8;
+            font-size: 16px;
+        }
+        
+        .main-content {
+            padding: 30px;
+        }
+        
+        .input-group {
+            margin-bottom: 25px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 16px;
+            resize: none;
+            transition: all 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #4a00e0;
+            box-shadow: 0 0 0 3px rgba(74, 0, 224, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        #generateBtn {
+            background: #4a00e0;
+            color: white;
+        }
+        
+        #generateBtn:hover {
+            background: #3600b3;
+            transform: translateY(-2px);
+        }
+        
+        #clearBtn {
+            background: #f5f5f5;
+            color: #666;
+        }
+        
+        #clearBtn:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+        
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #qrcode {
+            display: inline-block;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        #downloadBtn {
+            background: #00c853;
+            color: white;
+            display: none;
+            margin-top: 25px;
+            width: 100%;
+            max-width: 250px;
+        }
+        
+        #downloadBtn:hover {
+            background: #009624;
+            transform: translateY(-2px);
+        }
+        
+        .placeholder {
+            color: #999;
+            font-size: 18px;
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .error {
+            color: #ff3d00;
+            padding: 15px;
+            background: #ffebee;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #777;
+            font-size: 14px;
+            background: #f8f9fa;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .main-content {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>二维码生成器</h1>
+            <p>将文字或链接转换为二维码</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="input-group">
+                <label for="inputText">输入文本或网址：</label>
+                <textarea id="inputText" placeholder="请输入文本内容或网址（例如：https://example.com）"></textarea>
+            </div>
+            
+            <div class="button-group">
+                <button id="generateBtn">生成二维码</button>
+                <button id="clearBtn">清空内容</button>
+            </div>
+            
+            <div class="qr-container">
+                <div id="qrcode">
+                    <div class="placeholder">二维码将显示在这里</div>
+                </div>
+                <button id="downloadBtn">下载二维码</button>
+                <div id="errorMsg" class="error" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 二维码生成工具 | 支持文字和链接转换</p>
+        </div>
+    </div>
+
+    <!-- 使用可靠的二维码库 -->
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
+    <script>
+        // 确保二维码库已加载
+        function checkQRCodeLibrary() {
+            if (typeof QRCode === 'undefined') {
+                document.getElementById('errorMsg').textContent = '错误：二维码库加载失败，请检查网络连接';
+                document.getElementById('errorMsg').style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        const inputText = document.getElementById('inputText');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const qrcodeDiv = document.getElementById('qrcode');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        // 页面加载时检查库
+        window.addEventListener('load', function() {
+            if (!checkQRCodeLibrary()) {
+                generateBtn.disabled = true;
+            }
+        });
+
+        // 生成二维码
+        generateBtn.addEventListener('click', function() {
+            errorMsg.style.display = 'none';
+            
+            const text = inputText.value.trim();
+            
+            if (!text) {
+                errorMsg.textContent = '请输入要生成二维码的内容！';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            // 检查库是否可用
+            if (!checkQRCodeLibrary()) return;
+            
+            // 清除之前的二维码
+            qrcodeDiv.innerHTML = '';
+            
+            try {
+                // 生成新二维码
+                new QRCode(qrcodeDiv, {
+                    text: text,
+                    width: 200,
+                    height: 200,
+                    colorDark: "#000000",
+                    colorLight: "#ffffff",
+                    correctLevel: QRCode.CorrectLevel.H
+                });
+                
+                // 显示下载按钮
+                downloadBtn.style.display = 'block';
+            } catch (e) {
+                errorMsg.textContent = '生成二维码时出错：' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        });
+        
+        // 清空内容
+        clearBtn.addEventListener('click', function() {
+            inputText.value = '';
+            qrcodeDiv.innerHTML = '<div class="placeholder">二维码将显示在这里</div>';
+            downloadBtn.style.display = 'none';
+            errorMsg.style.display = 'none';
+        });
+        
+        // 下载二维码
+        downloadBtn.addEventListener('click', function() {
+            const canvas = qrcodeDiv.querySelector('canvas');
+            if (!canvas) {
+                errorMsg.textContent = '找不到二维码图像';
+                errorMsg.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const link = document.createElement('a');
+                link.download = '二维码_' + new Date().getTime() + '.png';
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } catch (e) {
+                errorMsg.textContent = '下载二维码时出错：' + e.message;
+                errorMsg.style.display = 'block';
+            }
+        });
+        
+        // 按Enter键生成二维码
+        inputText.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                generateBtn.click();
+            }
+        });
+    </script>
+</body>
+</html>

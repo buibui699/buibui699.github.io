@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片压缩器</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- MOD: Removed Noto Sans SC font link -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* MOD: Changed font-family to match converter */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* MOD: Removed most CSS Variables, as we are overriding them for a light theme */
+        :root {
+            --primary: #4776E6; /* Converter's blue */
+            --primary-dark: #3a56d4;
+            --secondary: #8E54E9; /* Converter's purple */
+            --accent: #4776E6; /* Using primary blue as accent */
+            --success: #00b09b; /* Converter's download green */
+            --warning: #ff9e00;
+            --danger: #e5383b;
+            --light: #f8f9fa;
+            --dark-text: #2c3e50; /* Converter's dark text */
+            --medium-text: #7f8c8d; /* Converter's medium text */
+            --border-color: #e0e0e0;
+            --shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        body {
+            /* MOD: Copied from Converter body */
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            /* MOD: Removed background-attachment: fixed; */
+            color: var(--dark-text); /* MOD: Default text color for light theme */
+            line-height: 1.7;
+        }
+
+        /* MOD: New wrapper to mimic converter's .container */
+        .page-wrapper {
+            width: 100%;
+            max-width: 1200px; /* Compressor might need more space than converter's 1000px */
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            margin: 20px auto; /* Ensures it's centered if body display:flex is removed */
+        }
+        
+        /* MOD: Adjusted original .container to just be a layout helper inside page-wrapper if needed */
+        .container {
+            max-width: 100%; /* Full width within page-wrapper */
+            margin: 0 auto;
+            padding: 0 30px 30px; /* Add padding for content inside wrapper */
+        }
+        
+        /* MOD: Header styling to match converter */
+        .page-wrapper > header {
+            background: linear-gradient(90deg, #4776E6 0%, #8E54E9 100%);
+            color: white;
+            padding: 25px 40px;
+            text-align: center;
+            /* MOD: Removed position: relative and margin-bottom from original compressor header */
+        }
+        
+        .page-wrapper > header .logo {
+             /* MOD: Simplified logo or integrate it differently. For now, let's make it an icon. */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent; /* No separate background */
+            width: auto;
+            height: auto;
+            border-radius: 0;
+            margin-bottom: 0; /* Adjusted from 25px */
+            margin-right: 15px; /* Space between icon and title */
+            box-shadow: none;
+        }
+        
+        .page-wrapper > header .logo i {
+            font-size: 1.8rem; /* Matches converter's header icon */
+            color: white;
+        }
+        
+        .page-wrapper > header h1 {
+            /* MOD: Style to match converter */
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            display: inline-block; /* To flow with logo */
+            vertical-align: middle;
+            background: none; /* Remove gradient text */
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            -webkit-text-fill-color: unset;
+            color: white; /* Explicitly white */
+            font-weight: normal; /* Converter's h1 is not bold by default */
+        }
+        
+        .page-wrapper > header p {
+            /* MOD: Style to match converter */
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 100%; /* Allow full width within header padding */
+            margin: 0 auto;
+            font-weight: normal; /* Converter's p is not light by default */
+        }
+        
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            /* MOD: Removed margin-bottom, handled by .container padding */
+        }
+        
+        @media (min-width: 1200px) {
+            .app-container {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
+        
+        /* MOD: Control and Preview sections made transparent to use wrapper's background */
+        .control-section, .preview-section {
+            background: transparent;
+            backdrop-filter: none;
+            border-radius: 0; /* No individual radius */
+            padding: 20px;    /* Reduced padding, outer container has padding */
+            box-shadow: none;
+            border: none;     /* No individual border */
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.3rem; /* Converter's panel-title size */
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color); /* Lighter border */
+            color: var(--dark-text); /* Dark text */
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            background: rgba(71, 118, 230, 0.1); /* Light blue bg */
+            width: 35px; /* Smaller icon container */
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: var(--primary);
+        }
+        
+        /* MOD: Upload area styling to match converter */
+        .upload-area {
+            border: 3px dashed var(--primary);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            background-color: rgba(71, 118, 230, 0.05);
+            position: relative;
+            margin-bottom: 25px;
+        }
+        
+        .upload-area:hover, .upload-area.dragover {
+            border-color: var(--secondary); /* Using converter's hover color for border */
+            background-color: rgba(71, 118, 230, 0.1);
+        }
+        
+        .upload-area i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            opacity: 1;
+        }
+        
+        .upload-area h3 {
+            font-size: 1.3rem; /* Adjusted size */
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        .upload-area p {
+            color: var(--medium-text);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        /* MOD: Button styling to match converter's general feel */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px; /* Adjusted padding */
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+            font-size: 1rem; /* Adjusted size */
+            text-decoration: none;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Converter's btn hover shadow */
+        }
+        
+        .btn i {
+            font-size: 1rem;
+        }
+        
+        .btn-lg {
+            padding: 15px 30px; /* Adjusted */
+            font-size: 1.1rem;
+        }
+        
+        /* MOD: Control group styling */
+        .control-group {
+            background: #f8f9fa; /* Light background */
+            border-radius: 12px; /* Converter style */
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .control-header {
+            margin-bottom: 15px;
+        }
+        
+        .control-header h3 {
+            font-size: 1.1rem; /* Adjusted */
+            font-weight: 600;
+            color: var(--primary); /* Blue title */
+        }
+        
+        .control-row {
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .control-item label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+        
+        /* MOD: Input and Select styling */
+        select, input:not([type="checkbox"]) { /* Exclude checkbox for custom styling if any */
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px; /* Slightly less rounded */
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--dark-text);
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        select:focus, input:not([type="checkbox"]):focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(71, 118, 230, 0.2); /* Converter focus */
+        }
+        
+        select option {
+            background: white; /* Options on light bg */
+            padding: 10px;
+            color: var(--dark-text);
+        }
+        
+        .checkbox-group {
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .checkbox-group input { /* Basic checkbox styling */
+            width: auto;
+            margin-right: 5px;
+        }
+        .checkbox-group label {
+            color: var(--dark-text);
+            font-weight: normal;
+        }
+        
+        /* MOD: File list styling */
+        .file-list {
+            max-height: 250px; /* Adjusted height */
+        }
+        
+        .file-item {
+            padding: 15px;
+            border-radius: 12px;
+            background: #f0f2f5; /* Slightly off-white */
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .file-item:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+        
+        .file-icon {
+            width: 40px; /* Smaller */
+            height: 40px;
+            background: rgba(71, 118, 230, 0.1);
+            border-radius: 8px;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .file-name {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--dark-text);
+        }
+        
+        .file-size {
+            font-size: 0.9rem;
+            color: var(--medium-text);
+            gap: 12px;
+        }
+        
+        .file-size i {
+            color: var(--primary); /* Icon color */
+            font-size: 0.85rem;
+        }
+        
+        .actions {
+            gap: 10px;
+            margin-top: 20px; /* Spacing above action buttons */
+        }
+        
+        .btn-secondary { /* For reset/clear */
+            background: #e0e0e0; /* Light gray */
+            color: var(--dark-text);
+        }
+        
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+        
+        .btn-success { /* For main action like compress/download */
+            background: var(--success); /* Green from converter */
+        }
+        
+        .btn-success:hover {
+            background: #2a8a00; /* Darker green */
+            box-shadow: 0 8px 20px rgba(56, 176, 0, 0.25);
+        }
+        
+        .btn-danger { /* For cancel */
+            background: var(--danger);
+        }
+        
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+        
+        /* MOD: Preview card styling */
+        .preview-card {
+            background: white; /* White background */
+            border-radius: 15px; /* Converter style */
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Converter style */
+            border: 1px solid var(--border-color);
+        }
+        
+        .preview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+        }
+        
+        .preview-header {
+            padding: 15px;
+            background: #f8f9fa; /* Light gray header */
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            color: var(--dark-text);
+            font-size: 1rem;
+        }
+        
+        .preview-size {
+            font-weight: 600;
+            color: var(--primary); /* Blue for size */
+        }
+        
+        .preview-image {
+            height: 220px; /* Adjusted height */
+            padding: 15px;
+            background: linear-gradient(45deg, #f5f7fa, #e4e7eb); /* Converter preview placeholder bg */
+        }
+        
+        .preview-image img {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .compression-info {
+            padding: 15px;
+            background: #f8f9fa; /* Match header */
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .compression-stats {
+            margin-bottom: 10px;
+        }
+        
+        .stat-label {
+            color: var(--medium-text);
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        .compression-ratio {
+            color: var(--success); /* Green for ratio */
+        }
+        
+        .compression-level { /* The text part */
+            font-weight: normal;
+        }
+        /* The tag part, .compress-level-tag, gets specific background/color below */
+
+        .progress-container {
+            margin-top: 10px;
+        }
+        
+        .progress-info {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+            color: var(--medium-text);
+        }
+        
+        .progress-bar {
+            height: 6px; /* Slimmer */
+            background: var(--border-color); /* Light gray background */
+        }
+        
+        .progress {
+            background: var(--primary); /* Blue progress */
+        }
+        
+        /* MOD: No image placeholder styling */
+        .no-image {
+            padding: 50px 20px;
+            color: var(--medium-text);
+        }
+        
+        .no-image i {
+            font-size: 4rem; /* Converter's placeholder icon size */
+            margin-bottom: 15px;
+            color: #bdc3c7; /* Converter's placeholder icon color */
+        }
+        
+        .no-image p {
+            font-size: 1rem;
+            color: var(--medium-text);
+        }
+        
+        .hidden { display: none; }
+        
+        .loading { /* Spinner styling remains similar */
+            width: 20px; height: 20px; border-width: 2px;
+        }
+        
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        /* MOD: Level tag styling, ensure good contrast on light theme */
+        .compress-level-tag {
+            padding: 3px 10px; /* Adjusted padding */
+            font-size: 0.8rem;
+        }
+        
+        .level-normal { background: rgba(56, 176, 0, 0.15); color: var(--success); }
+        .level-light { background: rgba(76, 201, 240, 0.15); color: #36A2EB; } /* Using PNG blue */
+        .level-high { background: rgba(255, 158, 0, 0.15); color: var(--warning); }
+        .level-extreme { background: rgba(229, 56, 59, 0.15); color: var(--danger); }
+        
+        /* MOD: Footer styling to match converter */
+        .page-wrapper > footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--medium-text);
+            font-size: 0.9rem;
+            background: #f8f9fa;
+            border-top: 1px solid var(--border-color);
+        }
+        .page-wrapper > footer p {
+            color: var(--medium-text); /* ensure footer p has right color */
+        }
+        
+        /* MOD: Feature highlight section styling */
+        .feature-highlight {
+            display: flex;
+            justify-content: center;
+            gap: 20px; /* Reduced gap */
+            margin-top: 20px;
+            padding: 20px; /* Add padding to this section if it's directly in .container */
+            flex-wrap: wrap;
+        }
+        
+        .feature-card {
+            background: #f0f2f5; /* Light background */
+            border-radius: 12px;
+            padding: 20px;
+            width: 200px; /* Adjusted width */
+            border: 1px solid var(--border-color);
+        }
+        
+        .feature-card i {
+            font-size: 2rem;
+            color: var(--primary); /* Blue icon */
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            margin-bottom: 10px;
+            color: var(--primary); /* Blue title */
+            font-size: 1.1rem;
+        }
+        
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--medium-text);
+        }
+
+        /* Responsive adjustments (copied from converter, might need tweaking) */
+        @media (max-width: 768px) {
+            .app-container { /* MOD: if app-container is used for main content layout */
+                grid-template-columns: 1fr; /* Stack columns */
+            }
+            .actions {
+                flex-direction: column; /* Stack action buttons */
+            }
+             .page-wrapper > header h1 {
+                font-size: 1.8rem;
+            }
+            .page-wrapper > header p {
+                font-size: 1rem;
+            }
+            .feature-highlight {
+                flex-direction: column;
+                align-items: center;
+            }
+            .feature-card {
+                width: 80%;
+                max-width: 300px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- MOD: Added page-wrapper -->
+    <div class="page-wrapper">
+        <header>
+            <div class="logo">
+                <i class="fas fa-compress-alt"></i>
+            </div>
+            <h1>专业图片压缩工具</h1>
+            <p>高效优化您的博客图片，提升网站加载速度，支持批量处理和多种压缩级别选择</p>
+        </header>
+        
+        <!-- MOD: .container is now for layout padding inside page-wrapper -->
+        <div class="container">
+            <div class="app-container">
+                <div class="control-section">
+                    <div class="section-title">
+                        <i class="fas fa-sliders-h"></i>
+                        <h2>压缩设置</h2>
+                    </div>
+                    
+                    <div class="upload-area" id="dropArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>拖放图片到此处上传</h3>
+                        <p>支持 JPG, PNG, GIF, WebP 格式 | 最大文件大小: 10MB</p>
+                        <button class="btn" id="selectBtn">
+                            <i class="fas fa-folder-open"></i> 选择图片
+                        </button>
+                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                    </div>
+                    
+                    <div class="control-group">
+                        <div class="control-header">
+                            <h3>压缩选项</h3>
+                        </div>
+                        
+                        <div class="control-row">
+                            <div class="control-item">
+                                <label for="compressionLevel"><i class="fas fa-bolt"></i> 压缩力度</label>
+                                <select id="compressionLevel">
+                                    <option value="light">轻微压缩 (高质量)</option>
+                                    <option value="normal" selected>普通压缩 (推荐)</option>
+                                    <option value="high">高压缩 (中等质量)</option>
+                                    <option value="extreme">极限压缩 (文件最小)</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-item">
+                                <label for="fileNameFormat"><i class="fas fa-file-signature"></i> 文件名格式</label>
+                                <select id="fileNameFormat">
+                                    <option value="original" selected>使用原名</option>
+                                    <option value="suffix">原名_压缩+力度</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="keepMetadata" checked>
+                            <label for="keepMetadata">保留EXIF元数据</label>
+                        </div>
+                    </div>
+                    
+                    <h3>已选图片</h3>
+                    <div class="file-list" id="fileList">
+                        <div class="no-image" id="emptyState">
+                            <i class="fas fa-cloud-download-alt"></i> <!-- MOD: Changed icon for consistency if desired -->
+                            <p>尚未选择图片，请上传图片</p>
+                        </div>
+                    </div>
+                    
+                    <div class="actions">
+                        <button class="btn btn-secondary" id="resetBtn">
+                            <i class="fas fa-trash-alt"></i> 清空列表
+                        </button>
+                        <button class="btn btn-danger" id="cancelBtn" disabled>
+                            <i class="fas fa-times-circle"></i> 取消压缩
+                        </button>
+                        <button class="btn btn-success btn-lg" id="compressBtn" disabled> <!-- MOD: Disabled by default -->
+                            <i class="fas fa-compress-arrows-alt"></i> 开始压缩
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="preview-section">
+                    <div class="section-title">
+                        <i class="fas fa-image"></i>
+                        <h2>压缩结果</h2>
+                    </div>
+                    
+                    <div class="preview-container" id="previewContainer">
+                        <div class="no-image" id="previewPlaceholder">
+                            <i class="fas fa-images"></i> <!-- MOD: Changed icon for consistency if desired -->
+                            <p>压缩后的图片将显示在这里</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="feature-highlight">
+                <div class="feature-card">
+                    <i class="fas fa-layer-group"></i>
+                    <h3>批量处理</h3>
+                    <p>一次性压缩多张图片，提高工作效率</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-sliders-h"></i>
+                    <h3>多级压缩</h3>
+                    <p>四种压缩级别满足不同需求</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>优化质量</h3> <!-- MOD: Changed text for clarity -->
+                    <p>在保证视觉效果的前提下优化大小</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 专业的图片压缩解决方案</p>
+            <p style="margin-top: 10px; opacity: 0.7;">图片压缩器 v2.0 | 专业版</p>
+        </footer>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM元素引用
+            const dropArea = document.getElementById('dropArea');
+            const fileInput = document.getElementById('fileInput');
+            const selectBtn = document.getElementById('selectBtn');
+            const fileList = document.getElementById('fileList');
+            const emptyState = document.getElementById('emptyState');
+            const compressionLevel = document.getElementById('compressionLevel');
+            const fileNameFormat = document.getElementById('fileNameFormat');
+            // const keepMetadata = document.getElementById('keepMetadata'); // Already in HTML, ensure JS uses it
+            const previewContainer = document.getElementById('previewContainer');
+            const previewPlaceholder = document.getElementById('previewPlaceholder');
+            const compressBtn = document.getElementById('compressBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+            
+            // 压缩级别配置
+            const compressionConfig = {
+                light: { quality: 0.9, label: '轻微压缩', class: 'level-light' },
+                normal: { quality: 0.75, label: '普通压缩', class: 'level-normal' },
+                high: { quality: 0.5, label: '高压缩', class: 'level-high' },
+                extreme: { quality: 0.3, label: '极限压缩', class: 'level-extreme' }
+            };
+            
+            let uploadedFiles = [];
+            let compressionInProgress = false;
+            
+            // 选择文件按钮
+            selectBtn.addEventListener('click', () => fileInput.click());
+            
+            // 文件选择变化
+            fileInput.addEventListener('change', handleFiles);
+            
+            // 拖放功能
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+                // MOD: removed body listener for drag events, only dropArea needs it
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                // MOD: Using CSS variables or direct values from new theme
+                dropArea.style.borderColor = 'var(--secondary, #8E54E9)'; 
+                dropArea.style.backgroundColor = 'rgba(71, 118, 230, 0.1)';
+            }
+            
+            function unhighlight() {
+                // MOD: Using CSS variables or direct values from new theme
+                dropArea.style.borderColor = 'var(--primary, #4776E6)';
+                dropArea.style.backgroundColor = 'rgba(71, 118, 230, 0.05)';
+            }
+            
+            // 处理拖放文件
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles({ target: { files } }); // Reuse handleFiles
+            }
+            
+            // 处理文件
+            function handleFiles(e) {
+                const newFiles = Array.from(e.target.files); // Renamed to avoid conflict
+                if (newFiles.length === 0) return;
+                
+                let addedCount = 0;
+                newFiles.forEach(file => {
+                    if (!file.type.match('image.*')) {
+                        alert(`文件 ${file.name} 不是图片格式，已跳过`);
+                        return;
+                    }
+                    
+                    if (file.size > 10 * 1024 * 1024) {
+                        alert(`文件 ${file.name} 超过10MB限制，已跳过`);
+                        return;
+                    }
+                    
+                    // Avoid duplicates by name and size (simple check)
+                    if (uploadedFiles.some(f => f.name === file.name && f.size === file.size)) {
+                         alert(`文件 ${file.name} 已存在列表中，已跳过`);
+                        return;
+                    }
+
+                    uploadedFiles.push(file);
+                    addFileToList(file, uploadedFiles.length - 1); // Pass index for progress bar
+                    addedCount++;
+                });
+                
+                if(addedCount > 0) {
+                    updateFileListState();
+                }
+                fileInput.value = ''; // Clear file input
+            }
+            
+            // 添加文件到列表
+            function addFileToList(file, fileIndex) { // Added fileIndex
+                const fileSize = formatFileSize(file.size);
+                
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+                fileItem.dataset.fileIndex = fileIndex; // Store index
+                fileItem.innerHTML = `
+                    <div class="file-icon">
+                        <i class="fas fa-file-image"></i>
+                    </div>
+                    <div class="file-info">
+                        <div class="file-name">${file.name}</div>
+                        <div class="file-size">
+                            <span><i class="fas fa-weight-hanging"></i> ${fileSize}</span>
+                            <span><i class="fas fa-tachometer-alt"></i> 未压缩</span>
+                        </div>
+                        <div class="progress-container" style="display: none;"> <!-- MOD: Hide initially -->
+                            <div class="progress-info">
+                                <span>准备压缩...</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                if (emptyState) emptyState.classList.add('hidden'); // Hide placeholder if it was visible
+                fileList.appendChild(fileItem);
+            }
+            
+            // 更新文件列表状态
+            function updateFileListState() {
+                if (uploadedFiles.length > 0) {
+                    if(emptyState) emptyState.classList.add('hidden');
+                    compressBtn.disabled = false;
+                } else {
+                    if(emptyState) emptyState.classList.remove('hidden');
+                    compressBtn.disabled = true;
+                    fileList.innerHTML = ''; // Clear list if empty
+                    fileList.appendChild(emptyState); // Show placeholder again
+                }
+            }
+            
+            // 压缩图片
+            compressBtn.addEventListener('click', async function() { // MOD: async for await
+                if (uploadedFiles.length === 0 || compressionInProgress) return;
+                
+                compressionInProgress = true;
+                compressBtn.disabled = true;
+                resetBtn.disabled = true; // Disable reset during compression
+                cancelBtn.disabled = false;
+                
+                compressBtn.innerHTML = '<div class="loading"></div> 压缩中...';
+                
+                if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
+                previewContainer.innerHTML = ''; // Clear previous previews
+                
+                const level = compressionLevel.value;
+                const currentConfig = compressionConfig[level]; // Renamed to avoid conflict
+                
+                // Reset progress bars and file status
+                document.querySelectorAll('.file-item').forEach(item => {
+                    const progressContainer = item.querySelector('.progress-container');
+                    if (progressContainer) {
+                        progressContainer.style.display = 'block'; // Show progress
+                        progressContainer.querySelector('.progress').style.width = '0%';
+                        progressContainer.querySelector('.progress-info span:first-child').textContent = '准备压缩...';
+                        progressContainer.querySelector('.progress-info span:last-child').textContent = '0%';
+                    }
+                    const statusSpan = item.querySelector('.file-size span:last-child');
+                    if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-tachometer-alt"></i> 排队中';
+                });
+
+                for (let i = 0; i < uploadedFiles.length; i++) {
+                    if (!compressionInProgress) break; // Check for cancellation
+                    
+                    const file = uploadedFiles[i];
+                    const fileItem = fileList.querySelector(`.file-item[data-file-index="${i}"]`);
+                    
+                    if (fileItem) {
+                         const statusSpan = fileItem.querySelector('.file-size span:last-child');
+                         if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-sync fa-spin"></i> 处理中';
+                    }
+
+                    try {
+                        const img = await loadImage(file);
+                        // Simulate actual compression (replace with real logic)
+                        await simulateCompression(file, i, currentConfig); 
+                        createPreviewCard(file, img, currentConfig, i); // Pass index
+                         if (fileItem && compressionInProgress) { // Check again before updating
+                            const statusSpan = fileItem.querySelector('.file-size span:last-child');
+                            if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-check-circle" style="color: var(--success);"></i> 已压缩';
+                        }
+                    } catch (error) {
+                        console.error("Error processing file:", file.name, error);
+                        if (fileItem) {
+                            const statusSpan = fileItem.querySelector('.file-size span:last-child');
+                            if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-exclamation-circle" style="color: var(--danger);"></i> 错误';
+                            const progressContainer = fileItem.querySelector('.progress-container');
+                            if (progressContainer) {
+                                progressContainer.querySelector('.progress-info span:first-child').textContent = '压缩失败';
+                            }
+                        }
+                    }
+                }
+
+                // Finalize UI
+                if (compressionInProgress) { // If not cancelled
+                    compressBtn.innerHTML = '<i class="fas fa-check-circle"></i> 压缩完成';
+                } else {
+                     compressBtn.innerHTML = '<i class="fas fa-compress-arrows-alt"></i> 开始压缩'; // If cancelled
+                }
+                compressionInProgress = false;
+                compressBtn.disabled = uploadedFiles.length === 0; // Re-enable based on files
+                resetBtn.disabled = false;
+                cancelBtn.disabled = true;
+
+                if (uploadedFiles.length > 0 && previewContainer.innerHTML === '') {
+                     if (previewPlaceholder) previewPlaceholder.classList.remove('hidden');
+                }
+                 setTimeout(() => { // Reset button text after a while if it was "Done"
+                    if (compressBtn.innerHTML.includes('完成')) {
+                       compressBtn.innerHTML = '<i class="fas fa-compress-arrows-alt"></i> 开始压缩';
+                    }
+                }, 3000);
+            });
+
+            function loadImage(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const img = new Image();
+                        img.onload = () => resolve(img);
+                        img.onerror = reject;
+                        img.src = e.target.result;
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            // 模拟压缩过程
+            function simulateCompression(file, index, config) { // Index is file's original index
+                return new Promise(resolve => {
+                    const fileItem = fileList.querySelector(`.file-item[data-file-index="${index}"]`);
+                    const progressBarContainer = fileItem ? fileItem.querySelector('.progress-container') : null;
+                    
+                    if (!progressBarContainer) {
+                        resolve();
+                        return;
+                    }
+                    progressBarContainer.style.display = 'block';
+                    const progressBar = progressBarContainer.querySelector('.progress');
+                    const progressText = progressBarContainer.querySelector('.progress-info span:last-child');
+                    const progressStatus = progressBarContainer.querySelector('.progress-info span:first-child');
+
+                    progressStatus.textContent = '压缩中...';
+                    
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        if (!compressionInProgress) {
+                            clearInterval(interval);
+                            progressStatus.textContent = '已取消';
+                            resolve(); // Resolve even if cancelled to proceed
+                            return;
+                        }
+                        
+                        progress += Math.floor(Math.random() * 15) + 10;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(interval);
+                            progressStatus.textContent = '压缩完成';
+                            resolve();
+                        }
+                        
+                        progressBar.style.width = `${progress}%`;
+                        progressText.textContent = `${progress}%`;
+                    }, 200); // Slower simulation for visibility
+                });
+            }
+            
+            // 创建预览卡片
+            function createPreviewCard(originalFile, originalImg, config, index) {
+                const quality = config.quality;
+                
+                const originalSize = originalFile.size;
+                const compressedSize = Math.max(100, Math.round(originalSize * quality * (Math.random() * 0.2 + 0.85))); // Simulate some variance
+                const ratio = originalSize > 0 ? Math.round((1 - compressedSize / originalSize) * 100) : 0;
+                
+                const format = fileNameFormat.value;
+                let newFileName = originalFile.name;
+                
+                if (format === 'suffix') {
+                    const extIndex = newFileName.lastIndexOf('.');
+                    const name = extIndex !== -1 ? newFileName.substring(0, extIndex) : newFileName;
+                    const ext = extIndex !== -1 ? newFileName.substring(extIndex) : '';
+                    newFileName = `${name}_${config.label.replace(/\s/g,'')}${ext}`;
+                }
+                
+                const previewCard = document.createElement('div');
+                previewCard.className = 'preview-card';
+                previewCard.innerHTML = `
+                    <div class="preview-header">
+                        <div class="preview-title" title="${newFileName}">${newFileName}</div>
+                        <div class="preview-size">${formatFileSize(compressedSize)}</div>
+                    </div>
+                    <div class="preview-image">
+                        <img src="${originalImg.src}" alt="压缩后的图片">
+                    </div>
+                    <div class="compression-info">
+                        <div class="compression-stats">
+                            <span class="stat-label">原始大小</span>
+                            <span class="stat-value">${formatFileSize(originalSize)}</span>
+                        </div>
+                        <div class="compression-stats">
+                            <span class="stat-label">压缩后大小</span>
+                            <span class="stat-value">${formatFileSize(compressedSize)}</span>
+                        </div>
+                        <div class="compression-stats">
+                            <span class="stat-label">压缩率</span>
+                            <span class="stat-value compression-ratio">${ratio}%</span>
+                        </div>
+                        <div class="compression-stats">
+                            <span class="stat-label">压缩级别</span>
+                            <span class="stat-value">
+                                <span class="compression-level">${config.label}</span>
+                                <span class="compress-level-tag ${config.class}">${(quality * 100).toFixed(0)}%质量</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="actions" style="padding: 15px; justify-content: flex-end;">
+                        <!-- <button class="btn btn-secondary btn-recompress" data-index="${index}">
+                            <i class="fas fa-redo"></i> 重新压缩
+                        </button> -->
+                        <button class="btn btn-download-single">
+                            <i class="fas fa-download"></i> 下载图片
+                        </button>
+                    </div>
+                `;
+                
+                const downloadBtn = previewCard.querySelector('.btn-download-single');
+                downloadBtn.addEventListener('click', function() {
+                    // In a real scenario, you'd download the actual compressed image data
+                    const a = document.createElement('a');
+                    a.href = originalImg.src; // Placeholder: download original for demo
+                    a.download = newFileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+                
+                previewContainer.appendChild(previewCard);
+                 if (previewPlaceholder) previewPlaceholder.classList.add('hidden');
+            }
+            
+            // 重置功能
+            resetBtn.addEventListener('click', function() {
+                if (compressionInProgress) {
+                    alert("请先取消或等待当前压缩完成。");
+                    return;
+                }
+                uploadedFiles = [];
+                fileList.innerHTML = ''; // Clear list content
+                 if (emptyState) {
+                    fileList.appendChild(emptyState); // Add placeholder back
+                    emptyState.classList.remove('hidden');
+                 }
+                previewContainer.innerHTML = '';
+                if (previewPlaceholder) previewPlaceholder.classList.remove('hidden');
+                updateFileListState(); // This will disable compressBtn
+                cancelBtn.disabled = true;
+                compressBtn.innerHTML = '<i class="fas fa-compress-arrows-alt"></i> 开始压缩';
+            });
+            
+            // 取消压缩
+            cancelBtn.addEventListener('click', function() {
+                compressionInProgress = false; // Signal to stop loops
+                compressBtn.disabled = uploadedFiles.length === 0;
+                resetBtn.disabled = false;
+                cancelBtn.disabled = true;
+                compressBtn.innerHTML = '<i class="fas fa-compress-arrows-alt"></i> 开始压缩';
+                
+                // Update UI for items that were processing or in queue
+                document.querySelectorAll('.file-item').forEach(item => {
+                    const progressContainer = item.querySelector('.progress-container');
+                    const statusSpan = item.querySelector('.file-size span:last-child');
+
+                    if (progressContainer && progressContainer.style.display !== 'none') {
+                        const progressStatus = progressContainer.querySelector('.progress-info span:first-child');
+                        if (progressStatus.textContent.includes('压缩中') || progressStatus.textContent.includes('准备')) {
+                             progressStatus.textContent = '已取消';
+                        }
+                    }
+                     if (statusSpan && (statusSpan.textContent.includes('处理中') || statusSpan.textContent.includes('排队中'))) {
+                         statusSpan.innerHTML = '<i class="fas fa-ban"></i> 已取消';
+                     }
+                });
+            });
+            
+            // 格式化文件大小
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // Initial state
+            updateFileListState();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高级文本差异对比工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.0.0/diff.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+            --light-bg: #f8f9fa;
+            --dark-bg: #212529;
+            --text-color: #333;
+            --text-light: #6c757d;
+            --border-color: #dee2e6;
+            --del-color: #ffcccb;
+            --ins-color: #c8f7c5;
+            --del-text: #e63946;
+            --ins-text: #2a9d8f;
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        header p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 18px 25px;
+            font-size: 1.4rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-header i {
+            margin-right: 10px;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 25px;
+        }
+        
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .input-group label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-group label i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
+        textarea {
+            width: 100%;
+            height: 250px;
+            padding: 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Roboto', monospace;
+            font-size: 15px;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+            flex: 1;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary-color);
+        }
+        
+        .btn-outline {
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #38b1d6;
+        }
+        
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #e41e75;
+        }
+        
+        .mode-selector {
+            display: flex;
+            background: var(--light-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+        
+        .mode-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .result-container {
+            position: relative;
+            min-height: 400px;
+        }
+        
+        .diff-result {
+            font-family: 'Roboto', monospace;
+            font-size: 15px;
+            line-height: 1.8;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: auto;
+            max-height: 600px;
+        }
+        
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .side-by-side .diff-section {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .side-by-side .diff-section:first-child {
+            border-right: 1px dashed var(--border-color);
+        }
+        
+        .line-numbers {
+            position: absolute;
+            left: 0;
+            top: 0;
+            padding: 20px 10px;
+            text-align: right;
+            color: var(--text-light);
+            font-family: monospace;
+            background: var(--light-bg);
+            border-right: 1px solid var(--border-color);
+            height: 100%;
+        }
+        
+        .diff-line {
+            padding: 2px 5px;
+            margin: 2px 0;
+            border-radius: 3px;
+            white-space: pre-wrap;
+        }
+        
+        .diff-line.del {
+            background-color: var(--del-color);
+            color: var(--del-text);
+            text-decoration: line-through;
+        }
+        
+        .diff-line.ins {
+            background-color: var(--ins-color);
+            color: var(--ins-text);
+        }
+        
+        .diff-line.context {
+            color: var(--text-light);
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--light-bg);
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .stat-label {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .del .stat-value {
+            color: var(--del-text);
+        }
+        
+        .ins .stat-value {
+            color: var(--ins-text);
+        }
+        
+        .match .stat-value {
+            color: var(--success-color);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        .highlight {
+            background-color: #fffacd;
+            padding: 0 3px;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+            flex-direction: column;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(67, 97, 238, 0.2);
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            color: var(--text-light);
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .empty-state p {
+            margin-top: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .diff-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .export-options {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+        
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            cursor: help;
+        }
+        
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 300px;
+            background: var(--dark-bg);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.9rem;
+            font-weight: normal;
+        }
+        
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .info-tooltip i {
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-file-alt"></i> 高级文本差异对比工具</h1>
+            <p>快速比较两段文本之间的差异，支持并排、行内和混合模式，并提供详细的差异分析</p>
+        </header>
+        
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <div><i class="fas fa-edit"></i> 输入文本</div>
+                </div>
+                <div class="card-body">
+                    <div class="input-group">
+                        <label for="text1"><i class="fas fa-file-code"></i> 原始文本</label>
+                        <textarea id="text1" placeholder="在此输入或粘贴原始文本...">function diffText(text1, text2) {
+    // 比较两段文本的差异
+    const diff = Diff.diffWords(text1, text2);
+    let output = '';
+    
+    diff.forEach((part) => {
+        const className = part.added ? 'ins' : 
+                         part.removed ? 'del' : 'context';
+        output += `<span class="diff-line ${className}">${part.value}</span>`;
+    });
+    
+    return output;
+}</textarea>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="text2"><i class="fas fa-file-medical"></i> 修改文本</label>
+                        <textarea id="text2" placeholder="在此输入或粘贴修改后的文本...">function compareText(original, modified) {
+    // 比较原始文本和修改文本的差异
+    const differences = Diff.diffWords(original, modified);
+    let resultHTML = '';
+    
+    differences.forEach((segment) => {
+        const styleClass = segment.added ? 'ins' : 
+                          segment.removed ? 'del' : null;
+        if (styleClass) {
+            resultHTML += `<span class="${styleClass}">${segment.value}</span>`;
+        } else {
+            resultHTML += segment.value;
+        }
+    });
+    
+    return resultHTML;
+}</textarea>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="compareBtn" class="btn btn-primary">
+                            <i class="fas fa-exchange-alt"></i> 比较文本
+                        </button>
+                        <button id="clearBtn" class="btn btn-outline">
+                            <i class="fas fa-broom"></i> 清空内容
+                        </button>
+                        <button id="exampleBtn" class="btn btn-outline">
+                            <i class="fas fa-lightbulb"></i> 加载示例
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div><i class="fas fa-chart-bar"></i> 比较结果</div>
+                </div>
+                <div class="card-body">
+                    <div class="diff-header">
+                        <div>
+                            <h3><i class="fas fa-project-diagram"></i> 差异分析</h3>
+                        </div>
+                        <div class="export-options">
+                            <button id="exportHtml" class="btn btn-success btn-sm">
+                                <i class="fas fa-download"></i> HTML
+                            </button>
+                            <button id="exportPdf" class="btn btn-danger btn-sm">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mode-selector">
+                        <button class="mode-btn active" data-mode="inline">行内模式</button>
+                        <button class="mode-btn" data-mode="side-by-side">并排模式</button>
+                        <button class="mode-btn" data-mode="mixed">混合模式</button>
+                    </div>
+                    
+                    <div class="result-container">
+                        <div id="diffResult" class="diff-result">
+                            <div class="empty-state">
+                                <i class="fas fa-compress-arrows-alt"></i>
+                                <h3>等待比较结果</h3>
+                                <p>输入文本后点击"比较文本"按钮查看差异</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat-item match">
+                            <div class="stat-value">0%</div>
+                            <div class="stat-label">匹配率</div>
+                        </div>
+                        <div class="stat-item del">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">删除部分</div>
+                        </div>
+                        <div class="stat-item ins">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">新增部分</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">0</div>
+                            <div class="stat-label">总差异</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>文本差异对比工具 &copy; 2025 | 使用Diff算法实现精确的文本比较</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取DOM元素
+            const text1 = document.getElementById('text1');
+            const text2 = document.getElementById('text2');
+            const compareBtn = document.getElementById('compareBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const exampleBtn = document.getElementById('exampleBtn');
+            const diffResult = document.getElementById('diffResult');
+            const modeBtns = document.querySelectorAll('.mode-btn');
+            const exportHtml = document.getElementById('exportHtml');
+            const exportPdf = document.getElementById('exportPdf');
+            const statsValues = document.querySelectorAll('.stat-value');
+            
+            // 当前模式
+            let currentMode = 'inline';
+            
+            // 设置活动模式按钮
+            function setActiveMode(mode) {
+                modeBtns.forEach(btn => {
+                    if (btn.dataset.mode === mode) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                currentMode = mode;
+            }
+            
+            // 比较文本
+            function compareText() {
+                const text1Value = text1.value;
+                const text2Value = text2.value;
+                
+                if (!text1Value.trim() && !text2Value.trim()) {
+                    diffResult.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h3>没有可比较的文本</h3>
+                            <p>请在两侧输入框中输入文本</p>
+                        </div>
+                    `;
+                    updateStats(0, 0, 0);
+                    return;
+                }
+                
+                // 显示加载状态
+                diffResult.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>正在分析文本差异...</p>
+                    </div>
+                `;
+                
+                // 使用setTimeout让UI有机会更新
+                setTimeout(() => {
+                    let resultHTML = '';
+                    let delCount = 0;
+                    let insCount = 0;
+                    
+                    if (currentMode === 'inline') {
+                        resultHTML = generateInlineDiff(text1Value, text2Value);
+                    } else if (currentMode === 'side-by-side') {
+                        resultHTML = generateSideBySideDiff(text1Value, text2Value);
+                    } else {
+                        resultHTML = generateMixedDiff(text1Value, text2Value);
+                    }
+                    
+                    diffResult.innerHTML = resultHTML;
+                    
+                    // 计算差异统计
+                    const totalChars = Math.max(text1Value.length, text2Value.length);
+                    const matchPercentage = totalChars > 0 ? 
+                        Math.round((1 - (delCount + insCount) / totalChars) * 100) : 100;
+                    
+                    updateStats(matchPercentage, delCount, insCount);
+                }, 100);
+            }
+            
+            // 生成行内差异
+            function generateInlineDiff(text1, text2) {
+                const diff = Diff.diffWords(text1, text2);
+                let resultHTML = '';
+                let delCount = 0;
+                let insCount = 0;
+                
+                diff.forEach(part => {
+                    if (part.added) {
+                        resultHTML += `<span class="diff-line ins">${part.value}</span>`;
+                        insCount += part.value.length;
+                    } else if (part.removed) {
+                        resultHTML += `<span class="diff-line del">${part.value}</span>`;
+                        delCount += part.value.length;
+                    } else {
+                        resultHTML += `<span class="diff-line context">${part.value}</span>`;
+                    }
+                });
+                
+                return resultHTML;
+            }
+            
+            // 生成并排差异
+            function generateSideBySideDiff(text1, text2) {
+                const diff = Diff.diffLines(text1, text2);
+                let leftHTML = '<div class="diff-section">';
+                let rightHTML = '<div class="diff-section">';
+                let lineNumber = 1;
+                let delCount = 0;
+                let insCount = 0;
+                
+                diff.forEach(part => {
+                    const lines = part.value.split('\n');
+                    // 移除最后一个空行
+                    if (lines.length > 0 && lines[lines.length - 1] === '') {
+                        lines.pop();
+                    }
+                    
+                    for (let i = 0; i < lines.length; i++) {
+                        if (part.added) {
+                            leftHTML += `<div class="diff-line context"> </div>`;
+                            rightHTML += `<div class="diff-line ins">${lines[i]}</div>`;
+                            insCount += lines[i].length;
+                        } else if (part.removed) {
+                            leftHTML += `<div class="diff-line del">${lines[i]}</div>`;
+                            rightHTML += `<div class="diff-line context"> </div>`;
+                            delCount += lines[i].length;
+                        } else {
+                            leftHTML += `<div class="diff-line context">${lines[i]}</div>`;
+                            rightHTML += `<div class="diff-line context">${lines[i]}</div>`;
+                        }
+                        lineNumber++;
+                    }
+                });
+                
+                leftHTML += '</div>';
+                rightHTML += '</div>';
+                
+                return `<div class="side-by-side">${leftHTML}${rightHTML}</div>`;
+            }
+            
+            // 生成混合模式差异
+            function generateMixedDiff(text1, text2) {
+                const diff = Diff.diffLines(text1, text2);
+                let resultHTML = '';
+                let delCount = 0;
+                let insCount = 0;
+                
+                diff.forEach(part => {
+                    const lines = part.value.split('\n');
+                    // 移除最后一个空行
+                    if (lines.length > 0 && lines[lines.length - 1] === '') {
+                        lines.pop();
+                    }
+                    
+                    for (let i = 0; i < lines.length; i++) {
+                        if (part.added) {
+                            resultHTML += `<div class="diff-line ins">+ ${lines[i]}</div>`;
+                            insCount += lines[i].length;
+                        } else if (part.removed) {
+                            resultHTML += `<div class="diff-line del">- ${lines[i]}</div>`;
+                            delCount += lines[i].length;
+                        } else {
+                            resultHTML += `<div class="diff-line context">${lines[i]}</div>`;
+                        }
+                    }
+                });
+                
+                return resultHTML;
+            }
+            
+            // 更新统计信息
+            function updateStats(matchPercentage, delCount, insCount) {
+                statsValues[0].textContent = `${matchPercentage}%`;
+                statsValues[1].textContent = delCount;
+                statsValues[2].textContent = insCount;
+                statsValues[3].textContent = delCount + insCount;
+            }
+            
+            // 清空内容
+            function clearContent() {
+                text1.value = '';
+                text2.value = '';
+                diffResult.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h3>等待比较结果</h3>
+                        <p>输入文本后点击"比较文本"按钮查看差异</p>
+                    </div>
+                `;
+                updateStats(0, 0, 0);
+            }
+            
+            // 加载示例
+            function loadExample() {
+                text1.value = `欢迎使用文本差异对比工具！
+
+这个工具可以帮助您比较两个文本文件或代码片段之间的差异。主要功能包括：
+1. 高亮显示新增和删除的内容
+2. 支持多种比较模式
+3. 提供差异统计信息
+4. 导出比较结果
+
+使用步骤：
+1. 在左侧输入原始文本
+2. 在右侧输入修改后的文本
+3. 点击"比较文本"按钮查看差异
+4. 根据需要切换不同的显示模式`;
+
+                text2.value = `欢迎使用高级文本差异对比工具！
+
+这个工具可以帮助您精确比较两个文本文件或代码片段之间的差异。主要功能包括：
+1. 高亮显示新增、删除和修改的内容
+2. 支持三种比较模式：行内、并排和混合
+3. 提供详细的差异统计信息
+4. 导出比较结果为HTML或PDF
+
+使用步骤：
+1. 在左侧输入原始文本
+2. 在右侧输入修改后的文本
+3. 点击"比较文本"按钮查看差异
+4. 使用顶部的模式切换按钮选择不同视图
+5. 导出结果以便分享或存档`;
+                
+                compareText();
+            }
+            
+            // 导出为HTML
+            function exportAsHtml() {
+                const content = diffResult.innerHTML;
+                const blob = new Blob([`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>文本差异比较结果</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .diff-line { padding: 2px 5px; margin: 2px 0; border-radius: 3px; white-space: pre-wrap; }
+                            .del { background-color: #ffcccb; color: #e63946; text-decoration: line-through; }
+                            .ins { background-color: #c8f7c5; color: #2a9d8f; }
+                            .context { color: #6c757d; }
+                            .side-by-side { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+                            .diff-section { padding: 15px; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>文本差异比较结果</h1>
+                        <p>生成时间: ${new Date().toLocaleString()}</p>
+                        <div>${content}</div>
+                    </body>
+                    </html>
+                `], { type: 'text/html' });
+                
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'text-diff-result.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+            
+            // 导出为PDF
+            function exportAsPdf() {
+                const { jsPDF } = window.jspdf;
+                
+                html2canvas(diffResult).then(canvas => {
+                    const imgData = canvas.toDataURL('image/png');
+                    const pdf = new jsPDF('p', 'mm', 'a4');
+                    const imgWidth = 190;
+                    const pageHeight = 297;
+                    const imgHeight = canvas.height * imgWidth / canvas.width;
+                    let heightLeft = imgHeight;
+                    let position = 10;
+                    
+                    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                    
+                    while (heightLeft >= 0) {
+                        position = heightLeft - imgHeight;
+                        pdf.addPage();
+                        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
+                    }
+                    
+                    pdf.save('text-diff-result.pdf');
+                });
+            }
+            
+            // 添加事件监听器
+            compareBtn.addEventListener('click', compareText);
+            clearBtn.addEventListener('click', clearContent);
+            exampleBtn.addEventListener('click', loadExample);
+            exportHtml.addEventListener('click', exportAsHtml);
+            exportPdf.addEventListener('click', exportAsPdf);
+            
+            modeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setActiveMode(btn.dataset.mode);
+                    if (text1.value || text2.value) {
+                        compareText();
+                    }
+                });
+            });
+            
+            // 初始化
+            setActiveMode('inline');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本处理工具集 - 在线小工具</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        #text-tools-page-wrapper { /* Renamed wrapper ID */
+            --primary-color-1: #667eea;
+            --primary-color-2: #764ba2;
+            --primary-color-3: #f093fb;
+            --secondary-color-1: #4facfe;
+            --secondary-color-2: #00f2fe;
+            --accent-color-1: #fa709a;
+            --accent-color-2: #fee140;
+
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.18);
+            --text-primary-on-dark: #ffffff;
+            --text-secondary-on-dark: rgba(255, 255, 255, 0.85);
+            --shadow-light: 0 8px 32px rgba(20, 20, 80, 0.15);
+            --shadow-medium: 0 15px 40px rgba(20, 20, 80, 0.2);
+            --shadow-heavy: 0 25px 60px rgba(20, 20, 80, 0.3);
+
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            
+            background: linear-gradient(135deg, 
+                var(--primary-color-1), 
+                var(--primary-color-2), 
+                var(--primary-color-3), 
+                var(--secondary-color-1), 
+                var(--secondary-color-2),
+                var(--primary-color-1)
+            );
+            background-size: 400% 400%;
+            animation: animatedGradient 25s ease infinite;
+
+            min-height: 100vh; 
+            padding: 20px;
+            position: relative; 
+            overflow-x: hidden;
+            color: var(--text-primary-on-dark); 
+        }
+
+        @keyframes animatedGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #text-tools-page-wrapper *,
+        #text-tools-page-wrapper *::before,
+        #text-tools-page-wrapper *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #text-tools-page-wrapper::before {
+            content: '';
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 85%, rgba(220, 220, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 15%, rgba(255, 200, 255, 0.05) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 1; 
+        }
+
+        #text-tools-page-wrapper .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2; 
+        }
+
+        #text-tools-page-wrapper .floating-elements {
+            position: absolute; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0; 
+        }
+
+        #text-tools-page-wrapper .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            opacity: 0.6;
+            animation: float 8s ease-in-out infinite alternate;
+        }
+
+        #text-tools-page-wrapper .floating-circle:nth-child(1) {
+            width: 70px; height: 70px; top: 12%; left: 8%; animation-duration: 7.5s; animation-delay: -1s;
+        }
+        #text-tools-page-wrapper .floating-circle:nth-child(2) {
+            width: 110px; height: 110px; top: 22%; right: 12%; animation-duration: 9s; animation-delay: -2.5s;
+        }
+        #text-tools-page-wrapper .floating-circle:nth-child(3) {
+            width: 55px; height: 55px; bottom: 18%; left: 18%; animation-duration: 6.5s; animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg) scale(0.9); opacity: 0.3; }
+            50% { transform: translateY(-30px) rotate(200deg) scale(1.05); opacity: 0.7; }
+            100% { transform: translateY(0px) rotate(380deg) scale(0.9); opacity: 0.3; }
+        }
+
+        #text-tools-page-wrapper .breadcrumb {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px); 
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 14px 22px;
+            margin-bottom: 45px;
+            box-shadow: var(--shadow-light);
+            animation: slideInDown 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            z-index: 3; 
+        }
+
+        #text-tools-page-wrapper .breadcrumb a {
+            color: var(--text-primary-on-dark);
+            text-decoration: none;
+            opacity: 0.9;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 500;
+            display: inline-block; 
+            position: relative;
+        }
+        #text-tools-page-wrapper .breadcrumb a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--secondary-color-2);
+            transition: width 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        #text-tools-page-wrapper .breadcrumb a:hover {
+            opacity: 1;
+            text-shadow: 0 0 15px rgba(220, 220, 255, 0.8);
+            transform: translateY(-3px);
+        }
+        #text-tools-page-wrapper .breadcrumb a:hover::after {
+            width: 100%;
+        }
+        #text-tools-page-wrapper .breadcrumb span {
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.75));
+            margin: 0 10px;
+        }
+
+        #text-tools-page-wrapper .header {
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--text-primary-on-dark);
+            animation: fadeInUp 1.1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s both;
+        }
+        #text-tools-page-wrapper .header-icon {
+            font-size: 4.2rem;
+            margin-bottom: 22px;
+            display: inline-block;
+            animation: bounceHeaderIcon 3s ease-in-out infinite; 
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        #text-tools-page-wrapper .header h1 {
+            font-size: 3.6rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            text-shadow: 0 5px 25px rgba(0,0,0,0.35);
+            background: linear-gradient(45deg, #ffffff, #e8efff, #ffffff);
+            background-size: 250% 250%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmerHeading 3.5s ease-in-out infinite;
+        }
+        #text-tools-page-wrapper .header p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            font-weight: 400;
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.65;
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.9));
+        }
+
+        @keyframes shimmerHeading {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        @keyframes bounceHeaderIcon { 
+            0%, 100% { transform: translateY(0) scale(1) rotate(0deg); }
+            20% { transform: translateY(-5px) scale(1.02) rotate(-3deg); }
+            40% { transform: translateY(-15px) scale(1.08) rotate(3deg); }
+            60% { transform: translateY(-5px) scale(1.02) rotate(-3deg); }
+            80% { transform: translateY(0px) scale(1) rotate(0deg); }
+        }
+
+        #text-tools-page-wrapper .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); 
+            gap: 35px;
+            margin-top: 50px; /* Existing margin, adjust if stats-grid comes after */
+            margin-bottom: 55px; /* Add margin if stats-grid follows */
+        }
+
+        #text-tools-page-wrapper .tool-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px); 
+            border: 1px solid var(--glass-border);
+            border-radius: 22px;
+            padding: 30px; 
+            box-shadow: var(--shadow-light);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                        border-color 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            color: var(--text-primary-on-dark); 
+            display: flex;
+            flex-direction: column;
+        }
+        #text-tools-page-wrapper .tool-card:nth-child(1) { animation-delay: 0.15s; }
+        #text-tools-page-wrapper .tool-card:nth-child(2) { animation-delay: 0.25s; }
+        #text-tools-page-wrapper .tool-card:nth-child(3) { animation-delay: 0.35s; }
+        #text-tools-page-wrapper .tool-card:nth-child(4) { animation-delay: 0.45s; }
+        #text-tools-page-wrapper .tool-card:nth-child(5) { animation-delay: 0.55s; }
+        /* Add more if needed */
+
+
+        #text-tools-page-wrapper .tool-card::before { 
+            content: '';
+            position: absolute;
+            top: 0; left: -150%; 
+            width: 100%; height: 100%; 
+            background: linear-gradient(100deg, transparent, rgba(255,255,255,0.12), transparent);
+            transform: skewX(-30deg); 
+            transition: left 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        #text-tools-page-wrapper .tool-card::after { 
+            content: '';
+            position: absolute;
+            top: -3px; left: -3px; right: -3px; bottom: -3px;
+            background: linear-gradient(135deg, var(--secondary-color-1), var(--secondary-color-2));
+            border-radius: 25px; 
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.45s ease-out;
+        }
+        #text-tools-page-wrapper .tool-card:hover {
+            box-shadow: var(--shadow-heavy);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        #text-tools-page-wrapper .tool-card:hover::before { left: 150%; }
+        #text-tools-page-wrapper .tool-card:hover::after { opacity: 0.9; }
+        
+        #text-tools-page-wrapper .tool-card:hover .tool-icon { 
+            transform: scale(1.2) rotateY(25deg) rotateX(15deg) translateZ(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+        }
+        #text-tools-page-wrapper .tool-card:hover .tool-title {
+            color: var(--secondary-color-2);
+            text-shadow: 0 0 8px var(--secondary-color-2);
+        }
+
+        #text-tools-page-wrapper .tool-icon {
+            width: 70px; height: 70px; 
+            background: linear-gradient(135deg, var(--secondary-color-1) 0%, var(--secondary-color-2) 100%);
+            border-radius: 18px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 22px auto; 
+            font-size: 28px; 
+            color: white; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: visible;
+        }
+        #text-tools-page-wrapper .tool-icon::before { 
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: inherit; 
+            transform: scale(1.1);
+            z-index: -1;
+        }
+        #text-tools-page-wrapper .tool-card:hover .tool-icon::before { opacity: 0.7; }
+        #text-tools-page-wrapper .tool-icon span { 
+            position: relative; z-index: 1;
+            transition: transform 0.3s ease;
+        }
+         #text-tools-page-wrapper .tool-card:hover .tool-icon span {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+
+        #text-tools-page-wrapper .tool-title {
+            font-size: 1.45rem; 
+            font-weight: 600;
+            color: var(--text-primary-on-dark); 
+            margin-bottom: 10px;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            text-align: center; 
+        }
+        #text-tools-page-wrapper .tool-desc {
+            color: var(--text-secondary-on-dark, rgba(255, 255, 255, 0.8));
+            line-height: 1.6; 
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-size: 0.88rem; 
+            text-align: center; 
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            flex-grow: 1;
+        }
+        #text-tools-page-wrapper .tool-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+            justify-content: center; 
+        }
+        #text-tools-page-wrapper .feature-tag {
+            background: rgba(255, 255, 255, 0.08); 
+            color: var(--text-primary-on-dark);
+            padding: 6px 12px; 
+            border-radius: 14px;
+            font-size: 0.72rem; 
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        #text-tools-page-wrapper .tool-card:hover .feature-tag {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+        #text-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(1) { transition-delay: 0.05s; }
+        #text-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(2) { transition-delay: 0.1s; }
+        #text-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(3) { transition-delay: 0.15s; }
+        #text-tools-page-wrapper .tool-card:hover .feature-tag:nth-child(4) { transition-delay: 0.2s; }
+
+
+        #text-tools-page-wrapper .feature-tag:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        #text-tools-page-wrapper .tool-badge {
+            display: inline-flex; 
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, var(--accent-color-1), var(--accent-color-2));
+            color: white; 
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 0.82rem; 
+            font-weight: 600;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.25);
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 0 auto; 
+        }
+         #text-tools-page-wrapper .tool-card .tool-badge-container { 
+            text-align: center;
+            margin-top: auto; 
+        }
+
+        #text-tools-page-wrapper .tool-card:hover .tool-badge {
+            transform: translateY(-3px) scale(1.08); 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.35);
+        }
+        #text-tools-page-wrapper .tool-badge span:first-child { 
+             display: inline-block;
+             transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        #text-tools-page-wrapper .tool-card:hover .tool-badge span:first-child {
+            transform: scale(1.3) rotate(15deg);
+        }
+
+
+        #text-tools-page-wrapper .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+            gap: 25px;
+            /* margin: 55px 0; Removed direct top margin, will be spaced by tools-grid bottom margin */
+            margin-bottom: 30px; /* Added some bottom margin for spacing if it's the last element */
+        }
+        #text-tools-page-wrapper .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 28px 25px;
+            text-align: center;
+            color: var(--text-primary-on-dark);
+            animation: fadeInUp 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; 
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+        #text-tools-page-wrapper .stat-card:hover {
+            transform: scale(1.08) translateY(-8px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        #text-tools-page-wrapper .stat-number {
+            font-size: 2.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--secondary-color-1), var(--secondary-color-2), var(--accent-color-2));
+            background-size: 150% 150%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px; 
+            transition: color 0.3s ease;
+        }
+         #text-tools-page-wrapper .stat-card:hover .stat-number {
+            animation: shimmerStatNumber 0.5s ease-out;
+        }
+        @keyframes shimmerStatNumber {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+
+        #text-tools-page-wrapper .stat-label {
+            opacity: 0.9;
+            margin-top: 8px;
+            font-size: 0.92rem;
+            color: var(--text-secondary-on-dark, rgba(255,255,255,0.85));
+        }
+
+        /* Animation Keyframes */
+        @keyframes slideInDown { 
+            from { opacity: 0; transform: translateY(-35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(35px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInUp { 
+            from { opacity: 0; transform: translateY(55px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #text-tools-page-wrapper .header h1 { font-size: 2.6rem; }
+            #text-tools-page-wrapper .header-icon { font-size: 3.8rem; }
+            #text-tools-page-wrapper .tools-grid { grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 28px; }
+            #text-tools-page-wrapper .tool-card { padding: 28px 25px; }
+            #text-tools-page-wrapper .stats-grid { grid-template-columns: 1fr; gap: 18px; }
+        }
+        @media (max-width: 480px) {
+            #text-tools-page-wrapper { padding: 12px; } 
+            #text-tools-page-wrapper .header h1 { font-size: 2rem; }
+            #text-tools-page-wrapper .header p { font-size: 0.95rem; }
+            #text-tools-page-wrapper .breadcrumb { padding: 10px 14px; font-size: 0.85rem;}
+            #text-tools-page-wrapper .tool-title { font-size: 1.15rem; }
+            #text-tools-page-wrapper .tool-desc { font-size: 0.8rem; }
+            #text-tools-page-wrapper .tool-icon { width: 60px; height: 60px; font-size: 24px;}
+            #text-tools-page-wrapper .stat-number { font-size: 1.8rem;}
+            #text-tools-page-wrapper .stat-label { font-size: 0.75rem;}
+            #text-tools-page-wrapper .tool-badge { padding: 7px 14px; font-size: 0.75rem;}
+            #text-tools-page-wrapper .feature-tag { padding: 5px 10px; font-size: 0.68rem;}
+        }
+        
+        #text-tools-page-wrapper .tool-card:focus-visible { 
+            outline: none;
+            box-shadow: 0 0 0 3px var(--secondary-color-1), var(--shadow-heavy);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="text-tools-page-wrapper">
+        <div class="floating-elements">
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+            <div class="floating-circle"></div>
+        </div>
+
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">🏠 首页</a>
+                <span>›</span>
+                <a href="/tools/">🛠️ 在线小工具</a>
+                <span>›</span>
+                <span>✍️ 文本处理工具</span>
+            </div>
+
+            <div class="header">
+                <div class="header-icon">📝</div>
+                <h1>文本处理工具集</h1>
+                <p>在线文本处理工具集合，助您轻松完成各种文本编辑、转换与分析任务。无需安装，即开即用。</p>
+            </div>
+
+            <!-- Tools Grid now comes before Stats Grid -->
+            <div class="tools-grid">
+                <div class="tool-card" onclick="window.open('/tools/text/formatter/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>💅</span></div>
+                    <div class="tool-title">文本排版美化</div>
+                    <div class="tool-desc">自动优化文本排版，规范标点符号，调整段落间距，提升阅读体验。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">自动格式化</span>
+                        <span class="feature-tag">标点规范</span>
+                        <span class="feature-tag">段落调整</span>
+                        <span class="feature-tag">一键美化</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>✨</span> 排版优化</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/text/Markdown/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>Ⓜ️</span></div>
+                    <div class="tool-title">Markdown 编辑器</div>
+                    <div class="tool-desc">强大的在线 Markdown 编辑器，支持实时预览、语法高亮和常用快捷键。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">实时预览</span>
+                        <span class="feature-tag">语法高亮</span>
+                        <span class="feature-tag">导出HTML/MD</span>
+                        <span class="feature-tag">简洁易用</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🖋️</span> 编辑利器</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/text/diff/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>📊</span></div>
+                    <div class="tool-title">文本对比工具</div>
+                    <div class="tool-desc">快速比较两段文本之间的差异，高亮显示不同之处，方便校对和版本控制。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">差异高亮</span>
+                        <span class="feature-tag">逐行对比</span>
+                        <span class="feature-tag">忽略空白</span>
+                        <span class="feature-tag">代码友好</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>👀</span> 对比分析</div></div>
+                </div>
+
+                <div class="tool-card" onclick="window.open('/tools/text/word-counter/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🔢</span></div>
+                    <div class="tool-title">字数统计器</div>
+                    <div class="tool-desc">精确统计文本中的字数、字符数（中英文）、段落数和行数，写作必备。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">多语言支持</span>
+                        <span class="feature-tag">字符统计</span>
+                        <span class="feature-tag">段落/行数</span>
+                        <span class="feature-tag">实时更新</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>🧮</span> 计量助手</div></div>
+                </div>
+                
+                <div class="tool-card" onclick="window.open('/tools/text/UTF-8/', '_blank')" tabindex="0">
+                    <div class="tool-icon"><span>🔄</span></div>
+                    <div class="tool-title">文本编码转换</div>
+                    <div class="tool-desc">在线转换文本文件的编码格式，如 UTF-8, GBK, BIG5 等，轻松解决乱码问题。</div>
+                    <div class="tool-features">
+                        <span class="feature-tag">UTF-8</span>
+                        <span class="feature-tag">GBK/GB2312</span>
+                        <span class="feature-tag">BIG5</span>
+                        <span class="feature-tag">解决乱码</span>
+                    </div>
+                    <div class="tool-badge-container"><div class="tool-badge"><span>⚙️</span> 编码处理</div></div>
+                </div>
+            </div>
+
+            <!-- Stats Grid is now here, after Tools Grid -->
+            <div class="stats-grid">
+                 <div class="stat-card">
+                    <div class="stat-number">5</div>
+                    <div class="stat-label">款实用工具</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">浏览器端处理</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">无限次</div>
+                    <div class="stat-label">免费使用</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">安全</div>
+                    <div class="stat-label">保护隐私</div>
+                </div>
+            </div>
+
+        </div> <!-- End of .container -->
+    </div> <!-- End of #text-tools-page-wrapper -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const wrapper = document.getElementById('text-tools-page-wrapper');
+            if (!wrapper) return;
+
+            wrapper.querySelectorAll('.tool-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (e.target.closest('a')) return; 
+
+                    const ripple = document.createElement('div');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height) * 1.8; 
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px; height: ${size}px;
+                        left: ${x}px; top: ${y}px;
+                        background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.03) 60%, transparent 80%);
+                        border-radius: 50%;
+                        transform: scale(0);
+                        animation: rippleEffectTextToolsPage 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                        pointer-events: none;
+                        z-index: 5; 
+                    `;
+                    this.appendChild(ripple);
+                    setTimeout(() => { ripple.remove(); }, 700);
+                });
+
+                let isMouseOverCard = false;
+                const perspectiveValue = 1800;
+                card.addEventListener('mouseenter', function(e) {
+                    isMouseOverCard = true;
+                    this.style.transition = 'transform 0.07s linear, box-shadow 0.3s ease, border-color 0.3s ease'; 
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 22; 
+                    const rotateY = (centerX - x) / 22; 
+                    this.style.transform = `translateY(-12px) scale(1.05) perspective(${perspectiveValue}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mousemove', function(e) {
+                    if (!isMouseOverCard) return;
+                    const rect = this.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 22; 
+                    const rotateY = (centerX - x) / 22; 
+                    this.style.transform = `translateY(-12px) scale(1.05) perspective(${perspectiveValue}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                card.addEventListener('mouseleave', function() {
+                    isMouseOverCard = false;
+                    this.style.transition = 'transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.45s ease';
+                    this.style.transform = `translateY(0px) scale(1) perspective(${perspectiveValue}px) rotateX(0deg) rotateY(0deg)`;
+                });
+            });
+
+            if (!document.getElementById('ripple-animation-style-text-tools-page')) {
+                const style = document.createElement('style');
+                style.id = 'ripple-animation-style-text-tools-page';
+                style.textContent = `
+                    @keyframes rippleEffectTextToolsPage {
+                        to {
+                            transform: scale(1.3); 
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+            
+            const observerOptions = {
+                root: null, 
+                threshold: 0.1,
+                rootMargin: '0px 0px -30px 0px' 
+            };
+
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.classList.add('is-visible'); 
+                        // obs.unobserve(entry.target); // Optional
+                    }
+                });
+            }, observerOptions);
+
+            wrapper.querySelectorAll('.tool-card, .stat-card, .breadcrumb, .header').forEach(el => {
+                el.style.opacity = '0'; 
+                observer.observe(el);
+            });
+
+            wrapper.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = wrapper.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

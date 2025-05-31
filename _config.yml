@@ -28,7 +28,7 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
+skip_render: 
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -128,7 +128,7 @@ bangumi: # 追番插件的全局配置命名空间
   vmid: 372204786 # 你的 Bilibili 用户 UID (User ID)。插件会根据这个 UID 获取你的追番列表。
   title: "追番列表" # 在生成的追番页面上显示的标题。
   quote: "生命不息，追番不止！" # 显示在追番页面顶部的一句引言或座右铭。
-  show: 1 # 要显示的追番类型。根据插件文档：0 (全部番剧), 1 (想看), 2 (在看), 3 (看过)。默认为 0。这里设置为 1，表示显示“想看”的番剧。
+  show: 1 # 要显示的追番类型。根据插件文档：0 (全部番剧), 1 (想看), 2 (在看), 3 (看过)。默认为 0。这里设置为 1，表示显示"想看"的番剧。
   lazyload: false # 是否启用图片懒加载。false 表示不启用，图片会立即加载。true 表示启用，图片会滚动到可视区域再加载。
   loading: # 图片加载时的占位符图片或加载动画的 URL。如果 lazyload 为 true，这个选项会比较有用。留空则使用插件默认。
   showMyComment: false # 是否在番剧条目下方显示你对该番剧的评论。false 表示不显示。
