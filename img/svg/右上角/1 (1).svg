@@ -1,0 +1,6 @@
+<!-- soft_bar_purple.svg -->
+<svg width="15" height="70" viewBox="0 0 15 70" xmlns="http://www.w3.org/2000/svg">
+  <rect width="15" height="70" rx="7.5" ry="7.5" fill="#A076F9"/>
+  <!-- Optional: subtle inner highlight for a bit of depth -->
+  <rect x="1.5" y="1.5" width="12" height="67" rx="6" ry="6" fill="rgba(255,255,255,0.15)"/>
+</svg>

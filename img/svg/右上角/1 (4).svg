@@ -1,0 +1,6 @@
+<!-- playful_triangle_yellow.svg -->
+<svg width="25" height="45" viewBox="0 0 25 45" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12.5 0 L25 45 L0 45 Z" fill="#FCE77E" transform="rotate(10 12.5 22.5)"/>
+  <!-- A little shine -->
+  <path d="M12.5 5 L20 40 L5 40 Z" fill="rgba(255,255,255,0.3)" transform="rotate(10 12.5 22.5)"/>
+</svg>

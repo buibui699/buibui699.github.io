@@ -1,0 +1,5 @@
+<!-- playful_blob_teal.svg -->
+<svg width="20" height="50" viewBox="0 0 20 50" xmlns="http://www.w3.org/2000/svg">
+  <path d="M10 0 Q0 10 2 25 T10 50 Q18 40 20 25 T10 0 Z" fill="#609EA2"/>
+  <path d="M10 5 Q2 13 4 25 T10 45 Q16 38 18 25 T10 5 Z" fill="rgba(255,255,255,0.2)"/>
+</svg>

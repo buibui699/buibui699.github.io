@@ -1,0 +1,5 @@
+<!-- soft_bar_pink.svg -->
+<svg width="15" height="60" viewBox="0 0 15 60" xmlns="http://www.w3.org/2000/svg">
+  <rect width="15" height="60" rx="7.5" ry="7.5" fill="#FD8A8A"/>
+  <rect x="1.5" y="1.5" width="12" height="57" rx="6" ry="6" fill="rgba(255,255,255,0.2)"/>
+</svg>
