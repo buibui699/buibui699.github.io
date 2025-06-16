@@ -1217,7 +1217,7 @@ LA:
 diytitle:
   enable: true # 是否启用
   leaveTitle: (ฅ>ω<*ฅ) 噫，我藏好了哦~~ # 离开当前标签页时显示的标题
-  backTitle: (●—●) 喔唷，被发现了呀！ # 返回当前标签页时显示的标题
+  backTitle: ㄟ(≧◇≦)ㄏ 喔唷，被发现了呀！ # 返回当前标签页时显示的标题
 
 # 留言弹幕配置
 comment_barrage_config:
