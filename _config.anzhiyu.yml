@@ -12,7 +12,7 @@ menu:
    我的: # 我的菜单组
      音乐馆: /music/?id=13781300834&server=netease || anzhiyu-icon-music # 音乐馆
      追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
-     相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
+     #相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
      小空调: /air-conditioner/ || anzhiyu-icon-fan # 小空调
 
    关于: # 关于菜单组
@@ -24,8 +24,8 @@ menu:
    小工具: # 在线小工具菜单组
      图片处理: /tools/image/ || anzhiyu-icon-image # 图片处理工具
      文本工具: /tools/text/ || anzhiyu-icon-file-text # 文本处理工具
-     趣娱乐: /tools/fun/ || anzhiyu-icon-gamepad # 趣娱乐工具
-     小游戏: /tools/xyx/ 
+     趣娱乐: /tools/fun/ || anzhiyu-icon-file-text # 趣娱乐工具
+     小游戏: /tools/xyx/ || anzhiyu-icon-file-text
    
 # nav相关配置 (顶部导航栏相关配置)
 nav:
@@ -351,7 +351,7 @@ comments:
   # Up to two comments system, the first will be shown as default (最多两个评论系统, 第一个将作为默认显示)
   # Choose: Valine/Waline/Twikoo/Artalk (选择评论系统)
   use: Twikoo # Twikoo/Waline (使用的评论系统，例如 Twikoo 或 Waline)
-  text: true # Display the comment name next to the button (在切换评论的按钮旁边显示评论系统名称)
+  text: false # Display the comment name next to the button (在切换评论的按钮旁边显示评论系统名称)
   # lazyload: The comment system will be load when comment element enters the browser's viewport. (当评论元素进入浏览器视口时加载评论系统。)
   # If you set it to true, the comment count will be invalid (如果设置为 true, 评论计数功能可能无效或不实时)
   lazyload: false # 是否懒加载评论系统
@@ -783,14 +783,14 @@ activate_power_mode:
 
 # Mouse click effects: fireworks (鼠标点击效果: 烟火特效)
 fireworks:
-  enable: true # 是否启用鼠标点击烟火特效
+  enable: false # 是否启用鼠标点击烟火特效
   zIndex: 9999 # -1 or 9999 (烟火特效的 z-index 层级)
-  mobile: true # 移动端是否启用
+  mobile: false # 移动端是否启用
 
 # Mouse click effects: Heart symbol (鼠标点击效果: 爱心)
 click_heart:
-  enable: false # 是否启用鼠标点击爱心特效
-  mobile: false # 移动端是否启用
+  enable: true # 是否启用鼠标点击爱心特效
+  mobile: true # 移动端是否启用
 
 # Mouse click effects: words (鼠标点击效果: 文字 )
 ClickShowText:
@@ -1162,12 +1162,12 @@ home_top:
   siteText: # 站点文字/域名显示
   category: # 分类快捷入口列表
     - name: 一笑 # 名称
-      path: https://blog.142556.xyz # 路径
+      path: "/" # 路径
       shadow: var(--anzhiyu-shadow-blue) # 阴影颜色 (CSS变量)
       class: blue # CSS 类名 (用于自定义样式)
       icon: anzhiyu-icon-dove # 图标类名
     - name: 解千愁
-      path: https://blog.142556.xyz
+      path: "/"
       shadow: var(--anzhiyu-shadow-red)
       class: red
       icon: anzhiyu-icon-fire
@@ -1184,8 +1184,8 @@ home_top:
   banner: # 首页顶部横幅广告/推广图
     tips:  # 提示文字
     title: 祝你————2025——————顺风顺水，顺财神，身体健康，万事如意 # 标题
-    image: /img/右上角背景800630.png # 图片链接
-    link: https://blog.142556.xyz # 点击链接
+    image: /img/右上角背景.png # 图片链接
+    link: "/" # 点击链接
 
 # 朋友圈配置
 friends_vue:
@@ -1221,7 +1221,7 @@ diytitle:
 
 # 留言弹幕配置
 comment_barrage_config:
-  enable: true # 是否启用留言弹幕功能 (在页面上实时滚动显示最新评论)
+  enable: false # 是否启用留言弹幕功能 (在页面上实时滚动显示最新评论)
   # 同时最多显示弹幕数
   maxBarrage: 5 # 同时最多显示的弹幕数量
   # 弹幕显示间隔时间ms
@@ -1246,7 +1246,7 @@ music_page_default: nav_music # 音乐页面 (/music) 默认加载的歌单来�
 
 # 评论匿名邮箱 (如果评论系统支持或主题有此功能)
 visitorMail:
-  enable: true # 是否启用匿名评论时的默认邮箱后缀
+  enable: false # 是否启用匿名评论时的默认邮箱后缀
   mail: "@example.com" # 匿名评论的邮箱后缀 (如 @example.com)
 
 # ptool 文章底部工具 (文章页底部的一系列工具按钮)

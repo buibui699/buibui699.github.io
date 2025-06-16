@@ -1,0 +1,36 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f093fb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f5576c;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- 卡片背景 -->
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="url(#cardGradient2)" filter="url(#shadow)"/>
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 图标容器 -->
+  <circle cx="40" cy="30" r="20" fill="url(#iconGradient2)" opacity="0.15"/>
+  <circle cx="40" cy="30" r="16" fill="none" stroke="url(#iconGradient2)" stroke-width="2"/>
+  
+  <!-- 文档 -->
+  <rect x="30" y="17" width="20" height="26" rx="2" fill="none" stroke="url(#iconGradient2)" stroke-width="2"/>
+  <!-- 文本行 -->
+  <line x1="33" y1="22" x2="44" y2="22" stroke="url(#iconGradient2)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="33" y1="26" x2="41" y2="26" stroke="url(#iconGradient2)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="33" y1="30" x2="46" y2="30" stroke="url(#iconGradient2)" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="33" y1="34" x2="39" y2="34" stroke="url(#iconGradient2)" stroke-width="1.5" stroke-linecap="round"/>
+  <!-- 编辑笔 -->
+  <path d="M 45 37 L 52 30" stroke="url(#iconGradient2)" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="50,28 54,32 52,34 48,30" fill="url(#iconGradient2)" opacity="0.3"/>
+  
+  <text x="40" y="65" text-anchor="middle" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="12" font-weight="500" fill="#333">文本工具</text>
+</svg>

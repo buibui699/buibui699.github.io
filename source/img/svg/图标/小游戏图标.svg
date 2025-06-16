@@ -1,0 +1,41 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- 卡片背景 -->
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="url(#cardGradient3)" filter="url(#shadow)"/>
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 图标容器 -->
+  <circle cx="40" cy="30" r="20" fill="url(#iconGradient3)" opacity="0.15"/>
+  <circle cx="40" cy="30" r="16" fill="none" stroke="url(#iconGradient3)" stroke-width="2"/>
+  
+  <!-- 游戏手柄 -->
+  <rect x="25" y="23" width="30" height="14" rx="7" fill="none" stroke="url(#iconGradient3)" stroke-width="2"/>
+  <!-- 左摇杆 -->
+  <circle cx="32" cy="30" r="3" fill="none" stroke="url(#iconGradient3)" stroke-width="1.5"/>
+  <circle cx="32" cy="30" r="1.5" fill="url(#iconGradient3)"/>
+  <!-- 右按键组 -->
+  <circle cx="48" cy="27" r="1.5" fill="url(#iconGradient3)"/>
+  <circle cx="45" cy="30" r="1.5" fill="url(#iconGradient3)"/>
+  <circle cx="51" cy="30" r="1.5" fill="url(#iconGradient3)"/>
+  <circle cx="48" cy="33" r="1.5" fill="url(#iconGradient3)"/>
+  <!-- 方向键 -->
+  <path d="M 40 15 L 42 13 L 44 15 L 42 17 Z" fill="url(#iconGradient3)" opacity="0.6"/>
+  <!-- 装饰元素 -->
+  <circle cx="25" cy="15" r="1" fill="url(#iconGradient3)" opacity="0.5"/>
+  <circle cx="55" cy="17" r="1" fill="url(#iconGradient3)" opacity="0.5"/>
+  
+  <text x="40" y="65" text-anchor="middle" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="12" font-weight="500" fill="#333">小游戏</text>
+</svg>
