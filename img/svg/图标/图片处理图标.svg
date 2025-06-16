@@ -1,0 +1,37 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- 卡片背景 -->
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="url(#cardGradient1)" filter="url(#shadow)"/>
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 图标容器 -->
+  <circle cx="40" cy="30" r="20" fill="url(#iconGradient1)" opacity="0.15"/>
+  <circle cx="40" cy="30" r="16" fill="none" stroke="url(#iconGradient1)" stroke-width="2"/>
+  
+  <!-- 图片框架 -->
+  <rect x="28" y="20" width="24" height="16" rx="2" fill="none" stroke="url(#iconGradient1)" stroke-width="2"/>
+  <!-- 山峰风景 -->
+  <path d="M 30 31 L 34 25 L 38 28 L 42 23 L 46 27 L 50 23" fill="none" stroke="url(#iconGradient1)" stroke-width="2" stroke-linecap="round"/>
+  <!-- 太阳 -->
+  <circle cx="45" cy="24" r="2" fill="url(#iconGradient1)"/>
+  <!-- 调色板装饰 -->
+  <circle cx="40" cy="43" r="4" fill="none" stroke="url(#iconGradient1)" stroke-width="1.5"/>
+  <circle cx="37" cy="41" r="1" fill="url(#iconGradient1)"/>
+  <circle cx="43" cy="41" r="1" fill="url(#iconGradient1)"/>
+  <circle cx="40" cy="45" r="1" fill="url(#iconGradient1)"/>
+  
+  <text x="40" y="65" text-anchor="middle" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="12" font-weight="500" fill="#333">图片处理</text>
+</svg>

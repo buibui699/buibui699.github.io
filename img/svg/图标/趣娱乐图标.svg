@@ -1,0 +1,41 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="cardGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="iconGradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffecd2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fcb69f;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- 卡片背景 -->
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="url(#cardGradient4)" filter="url(#shadow)"/>
+  <rect x="0" y="0" width="80" height="80" rx="16" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+  
+  <!-- 图标容器 -->
+  <circle cx="40" cy="30" r="20" fill="url(#iconGradient4)" opacity="0.15"/>
+  <circle cx="40" cy="30" r="16" fill="none" stroke="url(#iconGradient4)" stroke-width="2"/>
+  
+  <!-- 笑脸 -->
+  <circle cx="40" cy="30" r="10" fill="none" stroke="url(#iconGradient4)" stroke-width="2"/>
+  <!-- 眼睛 -->
+  <circle cx="36" cy="26" r="1.5" fill="url(#iconGradient4)"/>
+  <circle cx="44" cy="26" r="1.5" fill="url(#iconGradient4)"/>
+  <!-- 微笑 -->
+  <path d="M 34 32 Q 40 37 46 32" fill="none" stroke="url(#iconGradient4)" stroke-width="2" stroke-linecap="round"/>
+  <!-- 装饰星星 -->
+  <g opacity="0.6">
+    <path d="M 28 17 L 29 20 L 32 20 L 30 22 L 31 25 L 28 23 L 25 25 L 26 22 L 24 20 L 27 20 Z" fill="url(#iconGradient4)"/>
+    <path d="M 52 19 L 53 22 L 56 22 L 54 24 L 55 27 L 52 25 L 49 27 L 50 24 L 48 22 L 51 22 Z" fill="url(#iconGradient4)"/>
+  </g>
+  <!-- 装饰圆点 -->
+  <circle cx="22" cy="30" r="1" fill="url(#iconGradient4)" opacity="0.4"/>
+  <circle cx="58" cy="30" r="1" fill="url(#iconGradient4)" opacity="0.4"/>
+  
+  <text x="40" y="65" text-anchor="middle" font-family="'SF Pro Display', -apple-system, sans-serif" font-size="12" font-weight="500" fill="#333">趣娱乐</text>
+</svg>
