@@ -1,31 +1,37 @@
 menu:
-   文章: # 文章菜单组
-     时间轴: /archives/ || anzhiyu-icon-box-archive # 存档（隧道）
-     分类: /categories/ || anzhiyu-icon-shapes # 分类
-     标签: /tags/ || anzhiyu-icon-tags # 标签
+  文章: # 文章菜单组
+    时间轴: /archives/ || anzhiyu-icon-box-archive # 存档（隧道）
+    分类: /categories/ || anzhiyu-icon-shapes # 分类
+    标签: /tags/ || anzhiyu-icon-tags # 标签
 
-   友链: # 友链菜单组
-   #  友人帐: /link/ || anzhiyu-icon-link # 友人帐 (已注释掉)
-     朋友圈: /fcircle/ || anzhiyu-icon-artstation # 朋友圈
-     留言板: /comments/ || anzhiyu-icon-envelope # 留言板
+  友链: # 友链菜单组
+  #  友人帐: /link/ || anzhiyu-icon-link # 友人帐 (已注释掉)
+    朋友圈: /fcircle/ || anzhiyu-icon-artstation # 朋友圈
+    留言板: /comments/ || anzhiyu-icon-envelope # 留言板
 
-   我的: # 我的菜单组
-     音乐馆: /music/?id=13781300834&server=netease || anzhiyu-icon-music # 音乐馆
-     追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
-     #相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
-     小空调: /air-conditioner/ || anzhiyu-icon-fan # 小空调
+  我的: # 我的菜单组
+    音乐馆: /music/?id=13781300834&server=netease || anzhiyu-icon-music # 音乐馆
+    追番页: /bangumis/ || anzhiyu-icon-bilibili # 追番页 (已注释掉)
+    #相册集: /album/ || anzhiyu-icon-images # 相册集 (已注释掉)
+    小空调: /air-conditioner/ || anzhiyu-icon-fan # 小空调
 
-   关于: # 关于菜单组
-     关于本人: /about/ || anzhiyu-icon-paper-plane # 关于本人
+  关于: # 关于菜单组
+    关于本人: /about/ || anzhiyu-icon-paper-plane # 关于本人
     # 闲言碎语: /essay/ || anzhiyu-icon-lightbulb # 闲言碎语
-     随便逛逛: javascript:toRandomPost() || anzhiyu-icon-shoe-prints1 # 随便逛逛 (执行JS函数)
-   #  我的装备: /equipment/ || anzhiyu-icon-dice-d20
+    随便逛逛: javascript:toRandomPost() || anzhiyu-icon-shoe-prints1 # 随便逛逛 (执行JS函数)
+  #  我的装备: /equipment/ || anzhiyu-icon-dice-d20
 
-   小工具: # 在线小工具菜单组
-     图片处理: /tools/image/ || anzhiyu-icon-image # 图片处理工具
-     文本工具: /tools/text/ || anzhiyu-icon-file-text # 文本处理工具
-     趣娱乐: /tools/fun/ || anzhiyu-icon-file-text # 趣娱乐工具
-     小游戏: /tools/xyx/ || anzhiyu-icon-file-text
+  小工具: # 在线小工具菜单组
+    # “图片处理”已更新为外部链接
+    汇总页: https://tools.142556.xyz ||
+    图片处理: https://tools.142556.xyz/image-tools ||
+    # 请参照上面的格式，将下方各项的路径（|| 左侧的部分）修改为你的目标网址
+    文本工具: https://tools.142556.xyz/text-tools ||
+    音视频处理: https://tools.142556.xyz/media-tools ||
+    办公文档工具: https://tools.142556.xyz/office-tools ||
+    趣娱乐: https://tools.142556.xyz/fun-tools ||
+    小游戏: https://tools.142556.xyz/xyx ||
+
    
 # nav相关配置 (顶部导航栏相关配置)
 nav:
